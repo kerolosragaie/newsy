@@ -1,4 +1,4 @@
-package hoods.com.newsy.models
+package com.likander.newsy.features.core.domain.models
 
 import androidx.annotation.DrawableRes
 

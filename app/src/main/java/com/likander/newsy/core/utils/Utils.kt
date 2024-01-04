@@ -2,8 +2,8 @@ package com.likander.newsy.core.utils
 
 
 import com.likander.newsy.R
-import hoods.com.newsy.models.Country
-import hoods.com.newsy.models.Language
+import com.likander.newsy.features.core.domain.models.Country
+import com.likander.newsy.features.core.domain.models.Language
 import java.text.SimpleDateFormat
 import java.util.Locale
 
