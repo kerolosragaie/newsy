@@ -8,7 +8,7 @@ import com.likander.newsy.features.core.data.local.models.LocalContractDto
 @Entity("headline_table")
 data class HeadlineEntity(
     @PrimaryKey(autoGenerate = true)
-    override val id: Int,
+    override val id: Int = 0,
     override val author: String? = null,
     override val content: String? = null,
     override val description: String? = null,
@@ -19,7 +19,7 @@ data class HeadlineEntity(
     override val url: String? = null,
     @ColumnInfo("url_to_image")
     override val urlToImage: String? = null,
-    override val favourite: Boolean? = null,
+    override val favourite: Boolean = false,
     override val category: String? = null,
     override val page: Int
 ) : LocalContractDto()
