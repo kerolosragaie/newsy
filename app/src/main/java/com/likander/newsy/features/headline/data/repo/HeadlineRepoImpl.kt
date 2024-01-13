@@ -18,10 +18,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class HeadlineRepoImpl(
-    private val headlineApi: HeadlineApi,
-    private val database: NewsArticleDatabase,
-    private val mapper: Mapper<HeadlineEntity, Article>,
-    private val articleHeadlineMapper: Mapper<ArticleDto, HeadlineEntity>,
+     val headlineApi: HeadlineApi,
+     val database: NewsArticleDatabase,
+     val mapper: Mapper<HeadlineEntity, Article>,
+     val articleHeadlineMapper: Mapper<ArticleDto, HeadlineEntity>,
 ) : HeadlineRepo {
     @OptIn(ExperimentalPagingApi::class)
     override fun fetchHeadlineArticle(
