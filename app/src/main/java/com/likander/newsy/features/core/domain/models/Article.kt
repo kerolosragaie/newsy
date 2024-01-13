@@ -1,7 +1,7 @@
 package com.likander.newsy.features.core.domain.models
 
 data class Article(
-    val id: Int? = null,
+    val id: Int,
     val author: String? = null,
     val content: String? = null,
     val description: String? = null,
@@ -12,5 +12,5 @@ data class Article(
     val urlToImage: String? = null,
     val favourite: String? = null,
     val category: String? = null,
-    val page: Int? = null,
+    val page: Int,
 )

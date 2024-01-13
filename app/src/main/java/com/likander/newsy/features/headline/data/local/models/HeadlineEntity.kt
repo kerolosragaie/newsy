@@ -9,17 +9,17 @@ import com.likander.newsy.features.core.data.local.models.LocalContractDto
 data class HeadlineEntity(
     @PrimaryKey(autoGenerate = true)
     override val id: Int,
-    override val author: String?,
-    override val content: String?,
-    override val description: String?,
+    override val author: String? = null,
+    override val content: String? = null,
+    override val description: String? = null,
     @ColumnInfo("published_at")
-    override val publishedAt: String?,
-    override val source: String?,
-    override val title: String?,
-    override val url: String?,
+    override val publishedAt: String? = null,
+    override val source: String? = null,
+    override val title: String? = null,
+    override val url: String? = null,
     @ColumnInfo("url_to_image")
-    override val urlToImage: String?,
-    override val favourite: Boolean?,
-    override val category: String?,
+    override val urlToImage: String? = null,
+    override val favourite: Boolean? = null,
+    override val category: String? = null,
     override val page: Int
 ) : LocalContractDto()
