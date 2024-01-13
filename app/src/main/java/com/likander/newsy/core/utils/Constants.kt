@@ -1,7 +1,9 @@
 package com.likander.newsy.core.utils
 
+import com.likander.newsy.BuildConfig
+
 object Constants {
-    const val API_KEY = "53d85d86121a4572a00164af86f14d82"
+    const val API_KEY = BuildConfig.API_KEY
     const val PAGE_SIZE = 20
     const val BASE_URL = "https://newsapi.org/v2/"
     const val articleId = "articleId"

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -20,6 +22,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        //load the values from .properties file
+        val properties = Properties()
+        properties.load(project.rootProject.file("gradle.properties").inputStream())
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
+
     }
 
     buildTypes {
@@ -40,6 +48,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -71,10 +80,10 @@ dependencies {
     //Navigation
     implementation("androidx.navigation:navigation-compose:2.7.6")
     //Icons & UI utils
-    implementation ("androidx.compose.material:material-icons-extended:1.5.4")
-    implementation ("androidx.compose.ui:ui-util")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("androidx.compose.ui:ui-util")
     //ViewModel
-    val viewModelVersion="2.6.2"
+    val viewModelVersion = "2.6.2"
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$viewModelVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$viewModelVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:$viewModelVersion")
@@ -86,7 +95,7 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-paging:$roomVersion")
     //Retrofit 2
-    val retrofitVersion="2.9.0"
+    val retrofitVersion = "2.9.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
     // OkHttp
@@ -94,7 +103,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
     implementation("com.squareup.logcat:logcat:0.1")
     // Dagger-Hilt
-    val daggerHiltVersion="2.46.1"
+    val daggerHiltVersion = "2.46.1"
     implementation("com.google.dagger:hilt-android:$daggerHiltVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
     kapt("com.google.dagger:hilt-android-compiler:$daggerHiltVersion")
@@ -103,20 +112,20 @@ dependencies {
     androidTestImplementation("com.google.dagger:hilt-android-testing:$daggerHiltVersion")
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:$daggerHiltVersion")
     // Coroutines
-    val coroutinesVersion="1.7.1"
+    val coroutinesVersion = "1.7.1"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
     // Coil
     implementation("io.coil-kt:coil-compose:2.4.0")
     //splash
-    implementation ("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     // Paging 3
-    val paging3Version="3.2.1"
+    val paging3Version = "3.2.1"
     implementation("androidx.paging:paging-runtime-ktx:$paging3Version")
     implementation("androidx.paging:paging-compose:$paging3Version")
     // Mockito
-    val mockitoVersion="5.0.0"
+    val mockitoVersion = "5.0.0"
     testImplementation("org.mockito:mockito-core:$mockitoVersion")
     testImplementation("org.mockito:mockito-inline:$mockitoVersion")
 
