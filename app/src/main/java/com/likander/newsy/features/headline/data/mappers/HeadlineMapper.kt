@@ -1,7 +1,6 @@
 package com.likander.newsy.features.headline.data.mappers
 
-import com.likander.newsy.features.core.data.mappers.Mapper
-import com.likander.newsy.features.core.domain.models.Article
+import com.likander.newsy.features.headline.domain.model.Article
 import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
 
 class HeadlineMapper : Mapper<HeadlineEntity, Article> {
@@ -20,7 +19,7 @@ class HeadlineMapper : Mapper<HeadlineEntity, Article> {
         )
     }
 
-    override fun fromModel(value: Article): HeadlineEntity =
+    override fun fromModelToEntity(value: Article): HeadlineEntity =
         value.run {
             HeadlineEntity(
                 id = id,

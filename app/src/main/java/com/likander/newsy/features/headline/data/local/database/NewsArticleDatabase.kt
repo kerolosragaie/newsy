@@ -1,4 +1,4 @@
-package com.likander.newsy.features.core.data.local.database
+package com.likander.newsy.features.headline.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

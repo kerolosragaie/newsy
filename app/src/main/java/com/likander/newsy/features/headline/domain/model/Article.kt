@@ -1,4 +1,4 @@
-package com.likander.newsy.features.core.domain.models
+package com.likander.newsy.features.headline.domain.model
 
 data class Article(
     val id: Int,

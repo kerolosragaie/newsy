@@ -1,7 +1,7 @@
-package com.likander.newsy.features.headline.data.remote
+package com.likander.newsy.features.headline.data.remote.api
 
 import com.likander.newsy.core.utils.Constants
-import com.likander.newsy.features.core.data.remote.models.NewsDto
+import com.likander.newsy.features.headline.data.remote.model.NewsDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

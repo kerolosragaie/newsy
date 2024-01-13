@@ -7,12 +7,12 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.likander.newsy.features.core.data.local.database.NewsArticleDatabase
-import com.likander.newsy.features.core.data.mappers.Mapper
-import com.likander.newsy.features.core.data.remote.models.ArticleDto
+import com.likander.newsy.features.headline.data.local.database.NewsArticleDatabase
+import com.likander.newsy.features.headline.data.mappers.Mapper
+import com.likander.newsy.features.headline.data.remote.model.ArticleDto
 import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
 import com.likander.newsy.features.headline.data.local.models.HeadlineRemoteKeyEntity
-import com.likander.newsy.features.headline.data.remote.HeadlineApi
+import com.likander.newsy.features.headline.data.remote.api.HeadlineApi
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 

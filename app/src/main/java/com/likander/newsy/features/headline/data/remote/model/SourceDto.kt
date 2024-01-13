@@ -1,4 +1,4 @@
-package com.likander.newsy.features.core.data.remote.models
+package com.likander.newsy.features.headline.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 

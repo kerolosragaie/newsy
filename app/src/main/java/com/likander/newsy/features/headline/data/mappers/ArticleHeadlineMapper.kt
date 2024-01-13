@@ -1,7 +1,6 @@
 package com.likander.newsy.features.headline.data.mappers
 
-import com.likander.newsy.features.core.data.mappers.Mapper
-import com.likander.newsy.features.core.data.remote.models.ArticleDto
+import com.likander.newsy.features.headline.data.remote.model.ArticleDto
 import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
 
 class ArticleHeadlineMapper(
@@ -24,7 +23,7 @@ class ArticleHeadlineMapper(
 
     }
 
-    override fun fromModel(value: HeadlineEntity): ArticleDto = value.run {
+    override fun fromModelToEntity(value: HeadlineEntity): ArticleDto = value.run {
         ArticleDto(
             author,
             content,
