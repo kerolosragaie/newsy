@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.map
 class HeadlineRepoImpl(
     private val headlineRemoteDataSource: HeadlineRemoteDataSource,
     private val headlineLocalDataSource: HeadlineLocalDataSource,
-    val mapper: Mapper<HeadlineEntity, Article>,
-    val articleHeadlineMapper: Mapper<ArticleDto, HeadlineEntity>,
+    private val mapper: Mapper<HeadlineEntity, Article>,
+    private val articleHeadlineMapper: Mapper<ArticleDto, HeadlineEntity>,
 ) : HeadlineRepo {
     override fun fetchHeadlineArticle(
         category: String,

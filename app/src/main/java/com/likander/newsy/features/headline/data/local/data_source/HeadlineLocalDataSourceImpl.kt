@@ -40,7 +40,7 @@ class HeadlineLocalDataSourceImpl(
             articleHeadlineMapper = articleHeadlineMapper,
         )
     ) {
-        newsArticleDatabase.headlineDao().getAllHeadlineArticles()
+        headlineDao.getAllHeadlineArticles()
     }.flow
 
     override fun getHeadlineArticle(id: Int): Flow<HeadlineEntity> =
