@@ -6,7 +6,6 @@ import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
 import com.likander.newsy.features.headline.data.mappers.Mapper
 import com.likander.newsy.features.headline.data.remote.api.HeadlineApi
 import com.likander.newsy.features.headline.data.remote.model.ArticleDto
-import com.likander.newsy.features.headline.domain.model.Article
 import kotlinx.coroutines.flow.Flow
 
 interface HeadlineLocalDataSource {
