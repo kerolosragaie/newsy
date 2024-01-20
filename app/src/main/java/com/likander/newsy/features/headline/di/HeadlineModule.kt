@@ -1,9 +1,9 @@
 package com.likander.newsy.features.headline.di
 
-import com.likander.newsy.features.headline.data.local.database.NewsArticleDatabase
+import com.likander.newsy.features.headline.data.local.data_source.HeadlineLocalDataSource
 import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
 import com.likander.newsy.features.headline.data.mappers.Mapper
-import com.likander.newsy.features.headline.data.remote.api.HeadlineApi
+import com.likander.newsy.features.headline.data.remote.data_source.HeadlineRemoteDataSource
 import com.likander.newsy.features.headline.data.remote.model.ArticleDto
 import com.likander.newsy.features.headline.data.repo.HeadlineRepoImpl
 import com.likander.newsy.features.headline.domain.model.Article
@@ -21,14 +21,14 @@ import dagger.hilt.android.components.ViewModelComponent
 object HeadlineModule {
     @Provides
     fun provideHeadlineRepo(
-        api: HeadlineApi,
-        database: NewsArticleDatabase,
+        headlineRemoteDataSource: HeadlineRemoteDataSource,
+        headlineLocalDataSource: HeadlineLocalDataSource,
         mapper: Mapper<HeadlineEntity, Article>,
         articleHeadlineMapper: Mapper<ArticleDto, HeadlineEntity>,
     ): HeadlineRepo =
         HeadlineRepoImpl(
-            headlineApi = api,
-            database = database,
+            headlineRemoteDataSource = headlineRemoteDataSource,
+            headlineLocalDataSource = headlineLocalDataSource,
             mapper = mapper,
             articleHeadlineMapper = articleHeadlineMapper,
         )

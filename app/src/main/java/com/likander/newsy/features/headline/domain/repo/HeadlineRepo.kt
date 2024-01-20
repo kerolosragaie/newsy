@@ -1,6 +1,7 @@
 package com.likander.newsy.features.headline.domain.repo
 
 import androidx.paging.PagingData
+import com.likander.newsy.features.headline.data.remote.api.HeadlineApi
 import com.likander.newsy.features.headline.domain.model.Article
 import kotlinx.coroutines.flow.Flow
 

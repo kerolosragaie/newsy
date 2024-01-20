@@ -20,7 +20,6 @@ class ArticleHeadlineMapper(
             page = page,
             category = category,
         )
-
     }
 
     override fun fromModelToEntity(value: HeadlineEntity): ArticleDto = value.run {

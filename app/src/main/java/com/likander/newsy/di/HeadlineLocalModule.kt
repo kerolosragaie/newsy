@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.likander.newsy.features.headline.data.local.dao.HeadlineDao
 import com.likander.newsy.features.headline.data.local.dao.HeadlineRemoteKeyDao
+import com.likander.newsy.features.headline.data.local.data_source.HeadlineLocalDataSource
+import com.likander.newsy.features.headline.data.local.data_source.HeadlineLocalDataSourceImpl
 import com.likander.newsy.features.headline.data.local.database.NewsArticleDatabase
 import dagger.Module
 import dagger.Provides
@@ -36,4 +38,15 @@ object HeadlineLocalModule {
     fun providesHeadlineRemoteKeyDao(
         database: NewsArticleDatabase,
     ): HeadlineRemoteKeyDao = database.headlineRemoteKeyDao()
+
+    @Provides
+    @Singleton
+    fun provideHeadlineLocalDataSource(
+        headlineDao: HeadlineDao,
+        newsArticleDatabase: NewsArticleDatabase,
+    ): HeadlineLocalDataSource =
+        HeadlineLocalDataSourceImpl(
+            headlineDao = headlineDao,
+            newsArticleDatabase = newsArticleDatabase,
+        )
 }
