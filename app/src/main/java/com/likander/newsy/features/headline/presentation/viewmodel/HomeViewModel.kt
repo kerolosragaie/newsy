@@ -1,4 +1,4 @@
-package com.likander.newsy.features.home.viewmodel
+package com.likander.newsy.features.headline.presentation.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
