@@ -1,4 +1,4 @@
-package com.likander.newsy.features.home.components
+package com.likander.newsy.features.headline.presentation.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -37,7 +37,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -61,9 +60,7 @@ fun HeadlineItem(
     onViewMoreClick: () -> Unit,
     onFavouriteChange: (Article) -> Unit,
 ) {
-    var isAutoScrolling by remember {
-        mutableStateOf(true)
-    }
+    var isAutoScrolling by remember { mutableStateOf(true) }
 
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -195,8 +192,8 @@ fun PrevHeadlineItem() {
     NewsyTheme {
         Surface {
             HeadlineItem(
-                articles = articles,
-                articleCount = articles.size,
+                articles = fakeArticles,
+                articleCount = fakeArticles.size,
                 onCardClick = {},
                 onViewMoreClick = { /*TODO*/ },
                 onFavouriteChange = {},
@@ -205,7 +202,7 @@ fun PrevHeadlineItem() {
     }
 }
 
-private val articles = listOf(
+val fakeArticles = listOf(
     Article(
         id = 1,
         author = "John Doe",

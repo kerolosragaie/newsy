@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.likander.newsy.core.theme.NewsyTheme
-import com.likander.newsy.features.home.HomeScreen
+import com.likander.newsy.features.headline.presentation.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
