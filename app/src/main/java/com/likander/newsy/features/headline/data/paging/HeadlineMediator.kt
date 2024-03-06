@@ -7,11 +7,12 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.likander.newsy.features.headline.data.local.database.NewsArticleDatabase
-import com.likander.newsy.features.headline.data.mappers.Mapper
-import com.likander.newsy.features.headline.data.remote.model.ArticleDto
+import com.likander.newsy.core.common.data.local.database.NewsArticleDatabase
+import com.likander.newsy.core.common.data.mappers.Mapper
+import com.likander.newsy.core.common.data.model.ArticleDto
 import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
 import com.likander.newsy.features.headline.data.local.models.HeadlineRemoteKeyEntity
+import com.likander.newsy.features.headline.data.mappers.toHeadlineEntity
 import com.likander.newsy.features.headline.data.remote.api.HeadlineApi
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -20,7 +21,6 @@ import java.util.concurrent.TimeUnit
 class HeadlineMediator(
     private val api: HeadlineApi,
     private val database: NewsArticleDatabase,
-    private val articleHeadlineMapper: Mapper<ArticleDto, HeadlineEntity>,
     private val category: String = "",
     private val country: String = "",
     private val language: String = "",
@@ -98,7 +98,7 @@ class HeadlineMediator(
                     headlineRemoteKeyDao().insertAll(remoteKeys)
                     headlineDao().insertHeadlineArticles(
                         articles = headlineArticles.map {
-                            articleHeadlineMapper.toModel(it)
+                            it.toHeadlineEntity(page, category)
                         },
                     )
                 }
@@ -111,7 +111,6 @@ class HeadlineMediator(
             MediatorResult.Error(error)
         }
     }
-
 
     private suspend fun getRemoteKeyFirstItem(
         state: PagingState<Int, HeadlineEntity>
@@ -142,6 +141,5 @@ class HeadlineMediator(
             database.headlineRemoteKeyDao().getRemoteKeyByArticleId(article.url!!)
         }
     }
-
 
 }

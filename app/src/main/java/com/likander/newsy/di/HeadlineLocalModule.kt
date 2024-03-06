@@ -6,7 +6,7 @@ import com.likander.newsy.features.headline.data.local.dao.HeadlineDao
 import com.likander.newsy.features.headline.data.local.dao.HeadlineRemoteKeyDao
 import com.likander.newsy.features.headline.data.local.data_source.HeadlineLocalDataSource
 import com.likander.newsy.features.headline.data.local.data_source.HeadlineLocalDataSourceImpl
-import com.likander.newsy.features.headline.data.local.database.NewsArticleDatabase
+import com.likander.newsy.core.common.data.local.database.NewsArticleDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -4,14 +4,14 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.likander.newsy.core.common.data.local.database.NewsArticleDatabase
+import com.likander.newsy.core.common.data.mappers.Mapper
+import com.likander.newsy.core.common.data.model.ArticleDto
 import com.likander.newsy.core.utils.Constants
 import com.likander.newsy.features.headline.data.local.dao.HeadlineDao
-import com.likander.newsy.features.headline.data.local.database.NewsArticleDatabase
 import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
-import com.likander.newsy.features.headline.data.mappers.Mapper
 import com.likander.newsy.features.headline.data.paging.HeadlineMediator
 import com.likander.newsy.features.headline.data.remote.api.HeadlineApi
-import com.likander.newsy.features.headline.data.remote.model.ArticleDto
 import kotlinx.coroutines.flow.Flow
 
 class HeadlineLocalDataSourceImpl(
@@ -30,8 +30,7 @@ class HeadlineLocalDataSourceImpl(
             pageSize = Constants.PAGE_SIZE,
             prefetchDistance = Constants.PAGE_SIZE - 1,
             initialLoadSize = 10,
-        ),
-        remoteMediator = HeadlineMediator(
+        ), remoteMediator = HeadlineMediator(
             api = headlineApi,
             database = newsArticleDatabase,
             category = category,
@@ -57,5 +56,5 @@ class HeadlineLocalDataSourceImpl(
     override suspend fun updateFavouriteArticle(isFavourite: Boolean, id: Int) =
         headlineDao.updateFavouriteArticle(isFavourite, id)
 
-    override fun getNewsArticleDatabase(): NewsArticleDatabase  = newsArticleDatabase
+    override fun getNewsArticleDatabase(): NewsArticleDatabase = newsArticleDatabase
 }

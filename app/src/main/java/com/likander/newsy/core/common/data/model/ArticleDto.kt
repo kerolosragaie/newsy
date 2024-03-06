@@ -1,6 +1,7 @@
-package com.likander.newsy.features.headline.data.remote.model
+package com.likander.newsy.core.common.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.likander.newsy.features.headline.data.remote.model.SourceDto
 
 data class ArticleDto(
     @SerializedName("author")

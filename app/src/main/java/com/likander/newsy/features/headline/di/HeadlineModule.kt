@@ -2,11 +2,10 @@ package com.likander.newsy.features.headline.di
 
 import com.likander.newsy.features.headline.data.local.data_source.HeadlineLocalDataSource
 import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
-import com.likander.newsy.features.headline.data.mappers.ArticleHeadlineMapper
 import com.likander.newsy.features.headline.data.mappers.HeadlineMapper
-import com.likander.newsy.features.headline.data.mappers.Mapper
+import com.likander.newsy.core.common.data.mappers.Mapper
 import com.likander.newsy.features.headline.data.remote.data_source.HeadlineRemoteDataSource
-import com.likander.newsy.features.headline.data.remote.model.ArticleDto
+import com.likander.newsy.core.common.data.model.ArticleDto
 import com.likander.newsy.features.headline.data.repo.HeadlineRepoImpl
 import com.likander.newsy.features.headline.domain.model.Article
 import com.likander.newsy.features.headline.domain.repo.HeadlineRepo
@@ -26,20 +25,15 @@ object HeadlineModule {
     fun provideHeadlineMapper(): Mapper<HeadlineEntity, Article> = HeadlineMapper()
 
     @Provides
-    fun provideArticleHeadlineMapper(): Mapper<ArticleDto, HeadlineEntity> = ArticleHeadlineMapper()
-
-    @Provides
     fun provideHeadlineRepo(
         headlineRemoteDataSource: HeadlineRemoteDataSource,
         headlineLocalDataSource: HeadlineLocalDataSource,
         mapper: Mapper<HeadlineEntity, Article>,
-        articleHeadlineMapper: Mapper<ArticleDto, HeadlineEntity>,
     ): HeadlineRepo =
         HeadlineRepoImpl(
             headlineRemoteDataSource = headlineRemoteDataSource,
             headlineLocalDataSource = headlineLocalDataSource,
             mapper = mapper,
-            articleHeadlineMapper = articleHeadlineMapper,
         )
 
     @Provides

@@ -1,7 +1,7 @@
 package com.likander.newsy.features.headline.data.remote.api
 
 import com.likander.newsy.core.utils.Constants
-import com.likander.newsy.features.headline.data.remote.model.NewsDto
+import com.likander.newsy.core.common.data.model.NewsDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -19,5 +19,4 @@ interface HeadlineApi {
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int,
     ): NewsDto
-
 }
