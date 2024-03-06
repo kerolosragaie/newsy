@@ -5,7 +5,6 @@ import com.likander.newsy.core.common.data.model.ArticleDto
 import com.likander.newsy.features.discover.data.local.model.DiscoverArticleEntity
 import com.likander.newsy.features.headline.domain.model.Article
 
-
 class DiscoverArticleMapper : Mapper<DiscoverArticleEntity, Article> {
     override fun toModel(value: DiscoverArticleEntity): Article = Article(
         id = value.id,
