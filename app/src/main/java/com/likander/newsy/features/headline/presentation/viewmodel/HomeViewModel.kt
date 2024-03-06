@@ -24,7 +24,7 @@ class HomeViewModel @Inject constructor(
         loadArticles()
     }
 
-    private fun loadArticles() {
+     fun loadArticles() {
         homeUiState = homeUiState.copy(
             headlineArticles = headlineUseCases.fetchHeadlineArticleUseCase(
                 category = homeUiState.selectedHeadlineCategory.category,

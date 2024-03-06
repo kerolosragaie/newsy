@@ -12,32 +12,39 @@ import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.likander.newsy.R
+import com.likander.newsy.core.common.components.BottomSheet
+import com.likander.newsy.core.common.components.FailureBottomSheetContent
 import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.theme.itemSpacing
 import com.likander.newsy.core.utils.ArticleCategory
 import com.likander.newsy.features.headline.domain.model.Article
-import com.likander.newsy.features.home.components.HeaderTitle
 import com.likander.newsy.features.headline.presentation.components.HeadlineItem
-import com.likander.newsy.features.home.components.HomeTopAppBar
 import com.likander.newsy.features.headline.presentation.components.PaginationLoadingItem
 import com.likander.newsy.features.headline.presentation.components.fakeArticles
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeUiEvents
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeViewModel
-import kotlinx.coroutines.CoroutineScope
+import com.likander.newsy.features.home.components.HeaderTitle
+import com.likander.newsy.features.home.components.HomeTopAppBar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -51,49 +58,80 @@ fun HomeScreen(
     openDrawer: () -> Unit,
     onSearch: () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(
+        confirmValueChange = { false }
+    )
+    var failureMessage: String? by remember { mutableStateOf(null) }
+    val closeBottomSheet = {
+        coroutineScope.launch {
+            sheetState.hide()
+        }
+    }
+
     val homeState = viewModel.homeUiState
     val headlineArticles = homeState.headlineArticles.collectAsLazyPagingItems()
     val categories = ArticleCategory.values()
-    val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(snackbarHostState)
-        },
-        topBar = {
-            HomeTopAppBar(
-                openDrawer = openDrawer,
-                onSearch = onSearch,
+    LaunchedEffect(headlineArticles.loadState.mediator?.refresh) {
+        when (headlineArticles.loadState.mediator?.refresh) {
+            is LoadState.Error -> sheetState.show()
+            is LoadState.Loading -> sheetState.hide()
+            is LoadState.NotLoading -> sheetState.hide()
+            else -> sheetState.hide()
+        }
+    }
+
+    BottomSheet(
+        sheetState = sheetState,
+        sheetContent = {
+            FailureBottomSheetContent(
+                title = R.string.failure,
+                description = failureMessage ?: stringResource(id = R.string.something_went_wrong),
+                onOkClick = {
+                    closeBottomSheet.invoke()
+                    viewModel.loadArticles()
+                }
             )
-        },
-    ) { innerPadding ->
-        HeadlinesList(
-            contentPadding = innerPadding,
-            headlineArticles = headlineArticles,
-            coroutineScope = coroutineScope,
-            snackbarHostState = snackbarHostState,
-            onViewMoreClick = onViewMoreClick,
-            onHeadlineItemClick = onHeadlineItemClick,
-            onFavouriteHeadlineChange = { article ->
-                viewModel.onHomeUiEvents(
-                    HomeUiEvents.OnHeadLineFavouriteChange(
-                        article
-                    )
+        }
+    ) {
+        Scaffold(
+            topBar = {
+                HomeTopAppBar(
+                    openDrawer = openDrawer,
+                    onSearch = onSearch,
                 )
             },
-        )
+        ) { innerPadding ->
+            HeadlinesList(
+                contentPadding = innerPadding,
+                headlineArticles = headlineArticles,
+                showFailureBottomSheet = {
+                    failureMessage = it
+                    coroutineScope.launch {
+                        sheetState.show()
+                    }
+                },
+                onViewMoreClick = onViewMoreClick,
+                onHeadlineItemClick = onHeadlineItemClick,
+                onFavouriteHeadlineChange = { article ->
+                    viewModel.onHomeUiEvents(
+                        HomeUiEvents.OnHeadLineFavouriteChange(
+                            article
+                        )
+                    )
+                },
+            )
+        }
     }
 }
-
 
 @Composable
 private fun HeadlinesList(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     headlineArticles: LazyPagingItems<Article>,
-    coroutineScope: CoroutineScope,
-    snackbarHostState: SnackbarHostState,
+    showFailureBottomSheet: (error: String) -> Unit,
     onViewMoreClick: () -> Unit,
     onHeadlineItemClick: (id: Int) -> Unit,
     onFavouriteHeadlineChange: (Article) -> Unit,
@@ -104,8 +142,7 @@ private fun HeadlinesList(
     ) {
         headlineItems(
             headlineArticles = headlineArticles,
-            coroutineScope = coroutineScope,
-            snackbarHostState = snackbarHostState,
+            showFailureBottomSheet = showFailureBottomSheet,
             onViewMoreClick = onViewMoreClick,
             onHeadlineItemClick = onHeadlineItemClick,
             onFavouriteHeadlineChange = onFavouriteHeadlineChange,
@@ -116,8 +153,7 @@ private fun HeadlinesList(
 
 private fun LazyListScope.headlineItems(
     headlineArticles: LazyPagingItems<Article>,
-    coroutineScope: CoroutineScope,
-    snackbarHostState: SnackbarHostState,
+    showFailureBottomSheet: (error: String) -> Unit,
     onViewMoreClick: () -> Unit,
     onHeadlineItemClick: (id: Int) -> Unit,
     onFavouriteHeadlineChange: (Article) -> Unit,
@@ -136,9 +172,7 @@ private fun LazyListScope.headlineItems(
         PaginationLoadingItem(
             pagingState = headlineArticles.loadState.mediator?.refresh,
             onError = { e ->
-                coroutineScope.launch {
-                    snackbarHostState.showSnackbar(message = e.message ?: "unknown error")
-                }
+                showFailureBottomSheet.invoke(e.message ?: "unknown error")
             },
             onLoading = {
                 CircularProgressIndicator(
@@ -172,11 +206,10 @@ fun PrevHomeScreen() {
         Surface {
             HeadlinesList(
                 headlineArticles = headlineArticles.collectAsLazyPagingItems(),
-                coroutineScope = rememberCoroutineScope(),
-                snackbarHostState = remember { SnackbarHostState() },
                 onViewMoreClick = {},
                 onHeadlineItemClick = {},
-                onFavouriteHeadlineChange = {}
+                onFavouriteHeadlineChange = {},
+                showFailureBottomSheet = {}
             )
         }
     }
