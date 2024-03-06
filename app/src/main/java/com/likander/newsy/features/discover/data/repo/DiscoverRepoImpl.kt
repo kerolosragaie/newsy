@@ -31,6 +31,18 @@ class DiscoverRepoImpl(
         }
     }
 
+    override suspend fun getDiscoverArticleCurrentCategory(): String =
+        discoverLocalDataSource.getNewsArticleDatabase().discoverRemoteKeyDao().getCurrentCategory()
+
+    override suspend fun getAllAvailableCategories(): List<String> =
+        discoverLocalDataSource.getNewsArticleDatabase().discoverRemoteKeyDao()
+            .getAllAvailableCategories()
+
+    override suspend fun updateCategory(category: String) {
+        discoverLocalDataSource.getNewsArticleDatabase().discoverRemoteKeyDao()
+            .updateCategory(category)
+    }
+
     override suspend fun updateFavouriteArticle(article: Article) =
         discoverLocalDataSource.updateFavouriteArticle(
             article.favourite,

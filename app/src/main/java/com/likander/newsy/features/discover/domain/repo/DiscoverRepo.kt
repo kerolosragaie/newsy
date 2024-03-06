@@ -11,5 +11,8 @@ interface DiscoverRepo {
         language: String,
     ): Flow<PagingData<Article>>
 
+    suspend fun getDiscoverArticleCurrentCategory(): String
+    suspend fun getAllAvailableCategories(): List<String>
+    suspend fun updateCategory(category: String)
     suspend fun updateFavouriteArticle(article: Article): Int
 }

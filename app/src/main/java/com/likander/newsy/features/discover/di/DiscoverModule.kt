@@ -7,6 +7,11 @@ import com.likander.newsy.features.discover.data.local.model.DiscoverArticleEnti
 import com.likander.newsy.features.discover.data.remote.data_source.DiscoverRemoteDataSource
 import com.likander.newsy.features.discover.data.repo.DiscoverRepoImpl
 import com.likander.newsy.features.discover.domain.repo.DiscoverRepo
+import com.likander.newsy.features.discover.domain.usecase.DiscoverUseCases
+import com.likander.newsy.features.discover.domain.usecase.FetchDiscoverArticlesUseCase
+import com.likander.newsy.features.discover.domain.usecase.GetDiscoverCurrentCategoryUseCase
+import com.likander.newsy.features.discover.domain.usecase.UpdateCurrentCategoryUseCase
+import com.likander.newsy.features.discover.domain.usecase.UpdateFavouriteArticleUseCase
 import com.likander.newsy.features.headline.domain.model.Article
 import dagger.Module
 import dagger.Provides
@@ -29,5 +34,13 @@ object DiscoverModule {
         discoverRemoteDataSource,
         discoverLocalDataSource,
         mapper
+    )
+
+    @Provides
+    fun provideDiscoverUseCases(discoverRepo: DiscoverRepo): DiscoverUseCases = DiscoverUseCases(
+        FetchDiscoverArticlesUseCase(discoverRepo),
+        GetDiscoverCurrentCategoryUseCase(discoverRepo),
+        UpdateCurrentCategoryUseCase(discoverRepo),
+        UpdateFavouriteArticleUseCase(discoverRepo),
     )
 }
