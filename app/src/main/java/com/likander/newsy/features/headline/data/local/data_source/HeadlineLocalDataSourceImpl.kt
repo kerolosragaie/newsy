@@ -5,8 +5,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.likander.newsy.core.common.data.local.database.NewsArticleDatabase
-import com.likander.newsy.core.common.data.mappers.Mapper
-import com.likander.newsy.core.common.data.model.ArticleDto
 import com.likander.newsy.core.utils.Constants
 import com.likander.newsy.features.headline.data.local.dao.HeadlineDao
 import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
@@ -20,7 +18,6 @@ class HeadlineLocalDataSourceImpl(
 ) : HeadlineLocalDataSource {
     @OptIn(ExperimentalPagingApi::class)
     override fun getAllHeadlineArticles(
-        articleHeadlineMapper: Mapper<ArticleDto, HeadlineEntity>,
         headlineApi: HeadlineApi,
         category: String,
         country: String,
@@ -36,7 +33,6 @@ class HeadlineLocalDataSourceImpl(
             category = category,
             country = country,
             language = language,
-            articleHeadlineMapper = articleHeadlineMapper,
         )
     ) {
         headlineDao.getAllHeadlineArticles()
