@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -60,30 +61,21 @@ fun HeadlineItem(
     onViewMoreClick: () -> Unit,
     onFavouriteChange: (Article) -> Unit,
 ) {
-    var isAutoScrolling by remember { mutableStateOf(true) }
-
     val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = { articleCount }
     )
-
     val isDragged by pagerState.interactionSource.collectIsDraggedAsState()
+    var triggerAnimationKey by remember { mutableStateOf(false) }
 
-    LaunchedEffect(pagerState.currentPage) {
-        if (isDragged && !isAutoScrolling) {
-            isAutoScrolling = false
-            delay(8000)
-            isAutoScrolling = true
-        } else {
-            isAutoScrolling = true
-            delay(5000)
-            with(pagerState) {
-                val target = if (currentPage < articleCount - 1) currentPage + 1 else 0
-                scrollToPage(target)
-            }
+    LaunchedEffect(triggerAnimationKey, isDragged) {
+        delay(6000)
+        with(pagerState) {
+            val target = if (currentPage < articleCount - 1) currentPage + 1 else 0
+            animateScrollToPage(target)
         }
+        triggerAnimationKey = !triggerAnimationKey
     }
-
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -95,20 +87,12 @@ fun HeadlineItem(
             pageSize = PageSize.Fill,
             pageSpacing = itemSpacing,
         ) { page ->
-            if (isAutoScrolling) {
-                AnimatedContent(
-                    targetState = page,
-                    label = "",
-                ) { index ->
-                    HeadlineCard(
-                        article = articles[index],
-                        onCardClick = onCardClick,
-                        onFavouriteChange = onFavouriteChange,
-                    )
-                }
-            } else {
+            AnimatedContent(
+                targetState = page,
+                label = "Headline animated card",
+            ) { index ->
                 HeadlineCard(
-                    article = articles[page],
+                    article = articles[index],
                     onCardClick = onCardClick,
                     onFavouriteChange = onFavouriteChange,
                 )
@@ -116,10 +100,12 @@ fun HeadlineItem(
         }
         Spacer(modifier = Modifier.size(2.dp))
         TextButton(
-            modifier = Modifier.align(Alignment.End),
+            modifier = Modifier
+                .padding(horizontal = 10.dp)
+                .align(Alignment.End),
             onClick = onViewMoreClick,
         ) {
-            Text(text = "View more")
+            Text(text = stringResource(id = R.string.view_more))
         }
     }
 }
@@ -195,7 +181,7 @@ fun PrevHeadlineItem() {
                 articles = fakeArticles,
                 articleCount = fakeArticles.size,
                 onCardClick = {},
-                onViewMoreClick = { /*TODO*/ },
+                onViewMoreClick = {},
                 onFavouriteChange = {},
             )
         }

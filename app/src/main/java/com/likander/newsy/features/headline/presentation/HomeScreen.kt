@@ -2,14 +2,10 @@ package com.likander.newsy.features.headline.presentation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -21,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -34,12 +29,13 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.likander.newsy.R
 import com.likander.newsy.core.common.components.BottomSheet
 import com.likander.newsy.core.common.components.FailureBottomSheetContent
+import com.likander.newsy.core.common.components.LoadingContent
+import com.likander.newsy.core.common.components.PaginationLoadingItem
 import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.theme.itemSpacing
 import com.likander.newsy.core.utils.ArticleCategory
 import com.likander.newsy.features.headline.domain.model.Article
 import com.likander.newsy.features.headline.presentation.components.HeadlineItem
-import com.likander.newsy.features.headline.presentation.components.PaginationLoadingItem
 import com.likander.newsy.features.headline.presentation.components.fakeArticles
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeUiEvents
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeViewModel
@@ -140,18 +136,28 @@ private fun HeadlinesList(
         modifier = modifier,
         contentPadding = contentPadding,
     ) {
-        headlineItems(
-            headlineArticles = headlineArticles,
-            showFailureBottomSheet = showFailureBottomSheet,
-            onViewMoreClick = onViewMoreClick,
-            onHeadlineItemClick = onHeadlineItemClick,
-            onFavouriteHeadlineChange = onFavouriteHeadlineChange,
-        )
+        item {
+            HeaderTitle(
+                title = "Hot News",
+                icon = Icons.Default.LocalFireDepartment,
+            )
+            Spacer(modifier = Modifier.size(itemSpacing))
+        }
+
+        item {
+            HeadlineItems(
+                headlineArticles = headlineArticles,
+                showFailureBottomSheet = showFailureBottomSheet,
+                onViewMoreClick = onViewMoreClick,
+                onHeadlineItemClick = onHeadlineItemClick,
+                onFavouriteHeadlineChange = onFavouriteHeadlineChange
+            )
+        }
     }
 }
 
-
-private fun LazyListScope.headlineItems(
+@Composable
+private fun HeadlineItems(
     headlineArticles: LazyPagingItems<Article>,
     showFailureBottomSheet: (error: String) -> Unit,
     onViewMoreClick: () -> Unit,
@@ -160,46 +166,32 @@ private fun LazyListScope.headlineItems(
 ) {
     val articlesList = headlineArticles.itemSnapshotList.items
 
-    item {
-        HeaderTitle(
-            title = "Hot News",
-            icon = Icons.Default.LocalFireDepartment,
-        )
-        Spacer(modifier = Modifier.size(itemSpacing))
-    }
-
-    item {
-        PaginationLoadingItem(
-            pagingState = headlineArticles.loadState.mediator?.refresh,
-            onError = { e ->
-                showFailureBottomSheet.invoke(e.message ?: "unknown error")
-            },
-            onLoading = {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally),
-                )
-            },
-            onSuccess = {
-                HeadlineItem(
-                    articles = articlesList,
-                    articleCount = articlesList.size,
-                    onCardClick = {
-                        onHeadlineItemClick.invoke(it.id)
-                    },
-                    onViewMoreClick = onViewMoreClick,
-                    onFavouriteChange = onFavouriteHeadlineChange,
-                )
-            }
-        )
-    }
+    PaginationLoadingItem(
+        pagingState = headlineArticles.loadState.mediator?.refresh,
+        onError = { e ->
+            showFailureBottomSheet.invoke(e.message ?: "unknown error")
+        },
+        onLoading = {
+            LoadingContent()
+        },
+        onSuccess = {
+            HeadlineItem(
+                articles = articlesList,
+                articleCount = articlesList.size,
+                onCardClick = {
+                    onHeadlineItemClick.invoke(it.id)
+                },
+                onViewMoreClick = onViewMoreClick,
+                onFavouriteChange = onFavouriteHeadlineChange,
+            )
+        }
+    )
 }
 
 
 @PreviewLightDark
 @Composable
-fun PrevHomeScreen() {
+private fun PrevHomeScreen() {
     val headlineArticles: Flow<PagingData<Article>> = flow { fakeArticles }
 
     NewsyTheme {

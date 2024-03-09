@@ -9,5 +9,4 @@ sealed class HomeUiEvents {
     data class CategoryChange(val category: ArticleCategory) : HomeUiEvents()
     data class PreferencePanelToggle(val isOpen: Boolean) : HomeUiEvents()
     data class OnHeadLineFavouriteChange(val article: Article) : HomeUiEvents()
-
 }

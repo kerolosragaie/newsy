@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.likander.newsy.core.utils.Utils
+import com.likander.newsy.features.discover.domain.usecase.DiscoverUseCases
 import com.likander.newsy.features.headline.domain.usecase.HeadlineUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val headlineUseCases: HeadlineUseCases,
+    private val discoverUseCases: DiscoverUseCases,
 ) : ViewModel() {
 
     var homeUiState by mutableStateOf(HomeUiState())
@@ -24,7 +26,36 @@ class HomeViewModel @Inject constructor(
         loadArticles()
     }
 
-     fun loadArticles() {
+    fun loadArticles() {
+        updateHeadlineArticles()
+        updateDiscoverArticles()
+    }
+
+    fun onHomeUiEvents(homeUiEvents: HomeUiEvents) {
+        when (homeUiEvents) {
+            is HomeUiEvents.ArticleClicked -> TODO()
+            is HomeUiEvents.CategoryChange -> {
+                updateCategory(homeUiEvents)
+                updateDiscoverArticles()
+            }
+            is HomeUiEvents.OnHeadLineFavouriteChange -> onHeadLineFavouriteChange(homeUiEvents)
+            is HomeUiEvents.PreferencePanelToggle -> TODO()
+            is HomeUiEvents.ViewMoreClicked -> TODO()
+        }
+    }
+
+    private fun updateCategory(homeUiEvents: HomeUiEvents.CategoryChange) {
+        homeUiState = homeUiState.copy(
+            selectedDiscoverCategory = homeUiEvents.category
+        )
+        viewModelScope.launch {
+            discoverUseCases.updateCurrentCategoryUseCase(
+                homeUiState.selectedDiscoverCategory.category
+            )
+        }
+    }
+
+    private fun updateHeadlineArticles() {
         homeUiState = homeUiState.copy(
             headlineArticles = headlineUseCases.fetchHeadlineArticleUseCase(
                 category = homeUiState.selectedHeadlineCategory.category,
@@ -34,23 +65,24 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun onHomeUiEvents(homeUiEvents: HomeUiEvents) {
-        when (homeUiEvents) {
-            is HomeUiEvents.ArticleClicked -> TODO()
-            is HomeUiEvents.CategoryChange -> TODO()
-            is HomeUiEvents.OnHeadLineFavouriteChange -> viewModelScope.launch {
-                val isFavourite = homeUiEvents.article.favourite
-                val updatedArticle = homeUiEvents.article.copy(
-                    favourite = !isFavourite
-                )
-                headlineUseCases.updateHeadlineFavouriteUseCase(
-                    updatedArticle
-                )
-            }
-
-            is HomeUiEvents.PreferencePanelToggle -> TODO()
-            HomeUiEvents.ViewMoreClicked -> TODO()
-        }
+    private fun updateDiscoverArticles() {
+        homeUiState = homeUiState.copy(
+            discoverArticles = discoverUseCases.fetchDiscoverArticlesUseCase(
+                category = homeUiState.selectedDiscoverCategory.category,
+                country = "en",
+                language = "us",
+            ).cachedIn(viewModelScope)
+        )
     }
 
+    private fun onHeadLineFavouriteChange(homeUiEvents: HomeUiEvents.OnHeadLineFavouriteChange) =
+        viewModelScope.launch {
+            val isFavourite = homeUiEvents.article.favourite
+            val updatedArticle = homeUiEvents.article.copy(
+                favourite = !isFavourite
+            )
+            headlineUseCases.updateHeadlineFavouriteUseCase(
+                updatedArticle
+            )
+        }
 }

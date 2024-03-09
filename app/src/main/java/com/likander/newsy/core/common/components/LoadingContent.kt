@@ -15,10 +15,11 @@ import com.likander.newsy.core.theme.NewsyTheme
 
 @Composable
 fun LoadingContent(
+    modifier: Modifier = Modifier,
     isOverlay: Boolean = false
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(if (isOverlay) Color(0xCC000000) else Color.Transparent)
             .testTag(LOADING_CONTAINER_ID)
@@ -41,7 +42,7 @@ fun LoadingContent(
 @Composable
 private fun PreviewLoadingContent() {
     NewsyTheme {
-        LoadingContent(true)
+        LoadingContent(isOverlay = true)
     }
 }
 

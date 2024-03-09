@@ -1,4 +1,4 @@
-package com.likander.newsy.features.headline.presentation.components
+package com.likander.newsy.core.common.components
 
 import androidx.compose.runtime.Composable
 import androidx.paging.LoadState
