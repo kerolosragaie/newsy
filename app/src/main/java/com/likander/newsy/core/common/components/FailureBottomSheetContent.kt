@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.likander.newsy.R
 import com.likander.newsy.core.theme.NewsyTheme
 
-
 @Composable
 fun FailureBottomSheetContent(
     @StringRes title: Int,

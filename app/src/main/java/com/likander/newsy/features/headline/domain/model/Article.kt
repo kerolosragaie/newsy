@@ -32,4 +32,3 @@ data class Setting(
     val preferredCountryIndex: Int,
     val preferredLanguageIndex: Int,
 )
-

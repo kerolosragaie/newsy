@@ -1,4 +1,4 @@
-package com.likander.newsy.features.home.components
+package com.likander.newsy.features.headline.presentation.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image

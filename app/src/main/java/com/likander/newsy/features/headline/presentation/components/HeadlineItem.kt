@@ -51,7 +51,6 @@ import com.likander.newsy.core.utils.Utils
 import com.likander.newsy.features.headline.domain.model.Article
 import kotlinx.coroutines.delay
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HeadlineItem(
@@ -71,8 +70,8 @@ fun HeadlineItem(
     LaunchedEffect(triggerAnimationKey, isDragged) {
         delay(6000)
         with(pagerState) {
-            val target = if (currentPage < articleCount - 1) currentPage + 1 else 0
-            animateScrollToPage(target)
+            val targetItemIndex = (currentPage + 1) % articleCount
+            animateScrollToPage(targetItemIndex)
         }
         triggerAnimationKey = !triggerAnimationKey
     }
@@ -196,7 +195,7 @@ val fakeArticles = listOf(
         description = "Sample article description.",
         publishedAt = "2024-02-27T12:34:56Z",
         source = "Fake News Network",
-        title = "Sample Article Title",
+        title = "Sample Article Title, Fake News Network Title",
         url = "https://oilprice.com/Energy/Energy-General/Supply-Chain-Woes-Could-Derail-Bidens-Electric-Vehicle-Agenda.html",
         urlToImage = "https://d32r1sh890xpii.cloudfront.net/article/718x300/2024-02-27_zharv8scwu.jpg",
         favourite = false,

@@ -26,12 +26,14 @@ class DiscoverMediator(
         val cacheTimeout = TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES)
         val isCacheTimeOut =
             System.currentTimeMillis() - (database.discoverRemoteKeyDao().getCreationTime()
-                ?: 0) < cacheTimeout
+                ?: 0) > cacheTimeout
+        val isNotCategoryAvailable = database.discoverRemoteKeyDao().getAllAvailableCategories()
+            .find { it == category } == null
 
-        return if (isCacheTimeOut) {
-            InitializeAction.SKIP_INITIAL_REFRESH
-        } else {
+        return if (isCacheTimeOut || isNotCategoryAvailable) {
             InitializeAction.LAUNCH_INITIAL_REFRESH
+        } else {
+            InitializeAction.SKIP_INITIAL_REFRESH
         }
     }
 

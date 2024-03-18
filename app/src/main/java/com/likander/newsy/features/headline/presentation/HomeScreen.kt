@@ -34,13 +34,15 @@ import com.likander.newsy.core.common.components.PaginationLoadingItem
 import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.theme.itemSpacing
 import com.likander.newsy.core.utils.ArticleCategory
+import com.likander.newsy.features.discover.presentation.components.DiscoverItems
 import com.likander.newsy.features.headline.domain.model.Article
+import com.likander.newsy.features.headline.presentation.components.HeaderTitle
 import com.likander.newsy.features.headline.presentation.components.HeadlineItem
+import com.likander.newsy.features.headline.presentation.components.HomeTopAppBar
 import com.likander.newsy.features.headline.presentation.components.fakeArticles
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeUiEvents
+import com.likander.newsy.features.headline.presentation.viewmodel.HomeUiState
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeViewModel
-import com.likander.newsy.features.home.components.HeaderTitle
-import com.likander.newsy.features.home.components.HomeTopAppBar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -60,14 +62,12 @@ fun HomeScreen(
     )
     var failureMessage: String? by remember { mutableStateOf(null) }
     val closeBottomSheet = {
-        coroutineScope.launch {
-            sheetState.hide()
-        }
+        coroutineScope.launch { sheetState.hide() }
     }
 
     val homeState = viewModel.homeUiState
     val headlineArticles = homeState.headlineArticles.collectAsLazyPagingItems()
-    val categories = ArticleCategory.values()
+    val discoverArticles = homeState.discoverArticles.collectAsLazyPagingItems()
 
     LaunchedEffect(headlineArticles.loadState.mediator?.refresh) {
         when (headlineArticles.loadState.mediator?.refresh) {
@@ -100,8 +100,10 @@ fun HomeScreen(
             },
         ) { innerPadding ->
             HeadlinesList(
+                homeUiState = viewModel.homeUiState,
                 contentPadding = innerPadding,
                 headlineArticles = headlineArticles,
+                discoverArticles = discoverArticles,
                 showFailureBottomSheet = {
                     failureMessage = it
                     coroutineScope.launch {
@@ -125,13 +127,17 @@ fun HomeScreen(
 @Composable
 private fun HeadlinesList(
     modifier: Modifier = Modifier,
+    homeUiState: HomeUiState,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     headlineArticles: LazyPagingItems<Article>,
+    discoverArticles: LazyPagingItems<Article>,
     showFailureBottomSheet: (error: String) -> Unit,
     onViewMoreClick: () -> Unit,
     onHeadlineItemClick: (id: Int) -> Unit,
     onFavouriteHeadlineChange: (Article) -> Unit,
 ) {
+    val categories = ArticleCategory.entries
+
     LazyColumn(
         modifier = modifier,
         contentPadding = contentPadding,
@@ -151,6 +157,26 @@ private fun HeadlinesList(
                 onViewMoreClick = onViewMoreClick,
                 onHeadlineItemClick = onHeadlineItemClick,
                 onFavouriteHeadlineChange = onFavouriteHeadlineChange
+            )
+        }
+
+        item {
+            DiscoverItems(
+                homeUiState = homeUiState,
+                categories = categories,
+                discoverArticles = discoverArticles,
+                onItemClick = {
+
+                },
+                onCategoryChange = {
+
+                },
+                onFavouriteArticleChange = {
+
+                },
+                showFailureBottomSheet = {
+
+                }
             )
         }
     }
@@ -201,7 +227,9 @@ private fun PrevHomeScreen() {
                 onViewMoreClick = {},
                 onHeadlineItemClick = {},
                 onFavouriteHeadlineChange = {},
-                showFailureBottomSheet = {}
+                showFailureBottomSheet = {},
+                discoverArticles = headlineArticles.collectAsLazyPagingItems(),
+                homeUiState = HomeUiState()
             )
         }
     }

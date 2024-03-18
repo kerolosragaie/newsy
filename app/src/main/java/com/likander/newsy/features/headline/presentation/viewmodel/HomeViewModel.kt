@@ -48,11 +48,6 @@ class HomeViewModel @Inject constructor(
         homeUiState = homeUiState.copy(
             selectedDiscoverCategory = homeUiEvents.category
         )
-        viewModelScope.launch {
-            discoverUseCases.updateCurrentCategoryUseCase(
-                homeUiState.selectedDiscoverCategory.category
-            )
-        }
     }
 
     private fun updateHeadlineArticles() {

@@ -2,7 +2,6 @@ package com.likander.newsy.features.discover.presentation.components
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.runtime.Composable
@@ -13,11 +12,11 @@ import com.likander.newsy.core.common.components.PaginationLoadingItem
 import com.likander.newsy.core.theme.itemSpacing
 import com.likander.newsy.core.utils.ArticleCategory
 import com.likander.newsy.features.headline.domain.model.Article
+import com.likander.newsy.features.headline.presentation.components.HeaderTitle
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeUiState
-import com.likander.newsy.features.home.components.HeaderTitle
 
 @Composable
-fun LazyListScope.discoverItems(
+fun DiscoverItems(
     homeUiState: HomeUiState,
     categories: List<ArticleCategory>,
     discoverArticles: LazyPagingItems<Article>,
@@ -26,18 +25,16 @@ fun LazyListScope.discoverItems(
     onFavouriteArticleChange: (article: Article) -> Unit,
     showFailureBottomSheet: (error: String) -> Unit,
 ) {
-    item {
-        HeaderTitle(
-            title = "Discover News",
-            icon = Icons.Default.Newspaper,
-        )
-        Spacer(modifier = Modifier.size(itemSpacing))
-        DiscoverChips(
-            selectedCategory = homeUiState.selectedDiscoverCategory,
-            categories = categories,
-            onCategoryChange = onCategoryChange
-        )
-    }
+    HeaderTitle(
+        title = "Discover News",
+        icon = Icons.Default.Newspaper,
+    )
+    Spacer(modifier = Modifier.size(itemSpacing))
+    DiscoverChips(
+        selectedCategory = homeUiState.selectedDiscoverCategory,
+        categories = categories,
+        onCategoryChange = onCategoryChange
+    )
 
     PaginationLoadingItem(
         pagingState = discoverArticles.loadState.mediator?.refresh,
@@ -46,7 +43,7 @@ fun LazyListScope.discoverItems(
         },
         onLoading = { LoadingContent() },
         onSuccess = {
-
+            
         }
     )
 }

@@ -1,4 +1,4 @@
-package com.likander.newsy.features.home.components
+package com.likander.newsy.features.headline.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
