@@ -30,7 +30,7 @@ import com.likander.newsy.core.theme.NewsyTheme
 fun LoadingContent(
     modifier: Modifier = Modifier,
     isOverlay: Boolean = false,
-    color: Color = MaterialTheme.colorScheme.inverseOnSurface,
+    color: Color = MaterialTheme.colorScheme.onSurface,
 ) {
     Box(
         modifier = modifier

@@ -112,9 +112,7 @@ fun HomeScreen(
                 onHeadlineItemClick = onHeadlineItemClick,
                 onFavouriteHeadlineChange = { article ->
                     viewModel.onHomeUiEvents(
-                        HomeUiEvents.OnHeadLineFavouriteChange(
-                            article
-                        )
+                        HomeUiEvents.OnHeadLineFavouriteChange(article)
                     )
                 },
             )

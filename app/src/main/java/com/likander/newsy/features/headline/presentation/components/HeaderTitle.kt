@@ -53,7 +53,6 @@ private fun TitleText(text: String) {
     )
 }
 
-
 @PreviewLightDark
 @Composable
 private fun PreviewHeaderTitle() {

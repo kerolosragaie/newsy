@@ -65,7 +65,7 @@ fun HeadlineItem(
     LaunchedEffect(triggerAnimationKey, isDragged) {
         delay(5000)
         with(pagerState) {
-            val targetItemIndex = (currentPage + 1) % articleCount
+            val targetItemIndex = if (currentPage < pageCount - 1) currentPage + 1 else 0
             animateScrollToPage(targetItemIndex)
         }
         triggerAnimationKey = !triggerAnimationKey
@@ -159,7 +159,7 @@ private fun HeadlineCard(
 
 @PreviewLightDark
 @Composable
-fun PrevHeadlineItem() {
+private fun PrevHeadlineItem() {
     NewsyTheme {
         Surface {
             HeadlineItem(
