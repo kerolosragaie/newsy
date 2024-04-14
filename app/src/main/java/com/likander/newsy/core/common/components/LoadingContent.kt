@@ -1,16 +1,28 @@
 package com.likander.newsy.core.common.components
 
 import android.content.res.Configuration
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.animateValue
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.likander.newsy.core.theme.NewsyTheme
 
 @Composable
@@ -24,11 +36,58 @@ fun LoadingContent(
             .background(if (isOverlay) Color(0xCC000000) else Color.Transparent)
             .testTag(LOADING_CONTAINER_ID)
     ) {
-        CircularProgressIndicator(
+        LoadingSpinnerIndicator(
             modifier = Modifier
                 .align(Alignment.Center)
                 .testTag(LOADING_INDICATOR_ID),
         )
+    }
+}
+
+@Composable
+private fun LoadingSpinnerIndicator(
+    modifier: Modifier = Modifier,
+    sections: Int = 12,
+    color: Color = Color.White,
+    sectionLength: Dp = 8.dp,
+    sectionWidth: Dp = 4.dp
+) {
+    val infiniteTransition = rememberInfiniteTransition(label = "infinite_transition")
+    val sectionOffset by infiniteTransition.animateValue(
+        initialValue = 0,
+        targetValue = sections,
+        typeConverter = Int.VectorConverter,
+        animationSpec = infiniteRepeatable(
+            keyframes { delayMillis = 0 },
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "angle_animation"
+    )
+
+    Canvas(modifier) {
+        val radius = size.height / 2
+        val angle = 360f / sections
+        val alpha = 1f / sections
+
+        rotate(sectionOffset * angle) {
+            for (i in 1..sections) {
+                rotate(angle * i) {
+                    drawLine(
+                        color = color.copy(alpha = alpha * i),
+                        strokeWidth = sectionWidth.toPx(),
+                        start = Offset(
+                            x = radius,
+                            y = sectionLength.toPx()
+                        ),
+                        end = Offset(
+                            x = radius,
+                            y = sectionLength.toPx() * 2
+                        ),
+                        cap = StrokeCap.Round
+                    )
+                }
+            }
+        }
     }
 }
 
