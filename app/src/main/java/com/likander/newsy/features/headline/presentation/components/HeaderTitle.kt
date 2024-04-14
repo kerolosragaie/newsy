@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.likander.newsy.core.theme.NewsyTheme
-import com.likander.newsy.core.theme.defaultPadding
+import com.likander.newsy.core.theme.DEFAULT_PADDING
 
 @Composable
 fun HeaderTitle(
@@ -30,12 +30,12 @@ fun HeaderTitle(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = defaultPadding),
+            .padding(horizontal = DEFAULT_PADDING),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         TitleText(text = title)
-        Spacer(modifier = Modifier.size(defaultPadding))
+        Spacer(modifier = Modifier.size(DEFAULT_PADDING))
         Icon(
             imageVector = icon,
             contentDescription = title,

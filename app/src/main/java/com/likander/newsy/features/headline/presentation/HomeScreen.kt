@@ -31,8 +31,8 @@ import com.likander.newsy.core.common.components.BottomSheet
 import com.likander.newsy.core.common.components.FailureBottomSheetContent
 import com.likander.newsy.core.common.components.LoadingContent
 import com.likander.newsy.core.common.components.PaginationLoadingItem
+import com.likander.newsy.core.theme.ITEM_SPACING
 import com.likander.newsy.core.theme.NewsyTheme
-import com.likander.newsy.core.theme.itemSpacing
 import com.likander.newsy.core.utils.ArticleCategory
 import com.likander.newsy.features.discover.presentation.components.DiscoverItems
 import com.likander.newsy.features.headline.domain.model.Article
@@ -143,7 +143,7 @@ private fun HeadlinesList(
                 title = "Hot News",
                 icon = Icons.Default.LocalFireDepartment,
             )
-            Spacer(modifier = Modifier.size(itemSpacing))
+            Spacer(modifier = Modifier.size(ITEM_SPACING))
         }
 
         item {

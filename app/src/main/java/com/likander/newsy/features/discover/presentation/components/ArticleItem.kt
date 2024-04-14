@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.likander.newsy.core.common.components.NetworkImage
 import com.likander.newsy.core.theme.NewsyTheme
-import com.likander.newsy.core.theme.itemPadding
+import com.likander.newsy.core.theme.ITEM_PADDING
 import com.likander.newsy.core.utils.Utils
 import com.likander.newsy.features.headline.domain.model.Article
 import com.likander.newsy.features.headline.presentation.components.fakeArticles
@@ -43,7 +43,7 @@ fun ArticleItem(
     Card(
         modifier = Modifier
             .height(150.dp)
-            .padding(itemPadding)
+            .padding(ITEM_PADDING)
             .clickable { onClick(article) }
     ) {
         Row(

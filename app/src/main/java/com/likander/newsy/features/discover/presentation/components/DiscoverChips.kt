@@ -6,7 +6,7 @@ import androidx.compose.material3.InputChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.likander.newsy.core.theme.itemPadding
+import com.likander.newsy.core.theme.ITEM_PADDING
 import com.likander.newsy.core.utils.ArticleCategory
 
 @Composable
@@ -37,7 +37,7 @@ private fun DiscoverChip(
     label: String
 ) {
     InputChip(
-        modifier=modifier.padding(horizontal = itemPadding),
+        modifier=modifier.padding(horizontal = ITEM_PADDING),
         selected = selected,
         onClick = onCLick,
         label = { Text(text = label) },

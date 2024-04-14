@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.likander.newsy.core.theme.NewsyTheme
-import com.likander.newsy.core.theme.defaultPadding
+import com.likander.newsy.core.theme.DEFAULT_PADDING
 
 @Composable
 fun LoadingContent(
@@ -36,7 +36,7 @@ fun LoadingContent(
 ) {
     Box(
         modifier = modifier
-            .padding(defaultPadding)
+            .padding(DEFAULT_PADDING)
             .fillMaxSize()
             .background(if (isOverlay) Color(0xCC000000) else Color.Transparent)
             .testTag(LOADING_CONTAINER_ID)

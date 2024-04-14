@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.likander.newsy.core.common.components.LoadingContent
 import com.likander.newsy.core.common.components.PaginationLoadingItem
-import com.likander.newsy.core.theme.itemSpacing
+import com.likander.newsy.core.theme.ITEM_SPACING
 import com.likander.newsy.core.utils.ArticleCategory
 import com.likander.newsy.features.headline.domain.model.Article
 import com.likander.newsy.features.headline.presentation.components.HeaderTitle
@@ -31,7 +31,7 @@ fun DiscoverItems(
         title = "Discover News",
         icon = Icons.Default.Newspaper,
     )
-    Spacer(modifier = Modifier.size(itemSpacing))
+    Spacer(modifier = Modifier.size(ITEM_SPACING))
     DiscoverChips(
         selectedCategory = homeUiState.selectedDiscoverCategory,
         categories = categories,

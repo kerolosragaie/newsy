@@ -39,9 +39,9 @@ import androidx.compose.ui.unit.dp
 import com.likander.newsy.R
 import com.likander.newsy.core.common.components.NetworkImage
 import com.likander.newsy.core.theme.NewsyTheme
-import com.likander.newsy.core.theme.defaultPadding
-import com.likander.newsy.core.theme.itemPadding
-import com.likander.newsy.core.theme.itemSpacing
+import com.likander.newsy.core.theme.DEFAULT_PADDING
+import com.likander.newsy.core.theme.ITEM_PADDING
+import com.likander.newsy.core.theme.ITEM_SPACING
 import com.likander.newsy.core.utils.Utils
 import com.likander.newsy.features.headline.domain.model.Article
 import kotlinx.coroutines.delay
@@ -76,10 +76,10 @@ fun HeadlineItem(
     ) {
         HorizontalPager(
             state = pagerState,
-            contentPadding = PaddingValues(defaultPadding),
+            contentPadding = PaddingValues(DEFAULT_PADDING),
             beyondBoundsPageCount = 0,
             pageSize = PageSize.Fill,
-            pageSpacing = itemSpacing,
+            pageSpacing = ITEM_SPACING,
         ) { page ->
             AnimatedContent(
                 targetState = page,
@@ -125,7 +125,7 @@ private fun HeadlineCard(
             )
 
             Text(
-                modifier = Modifier.padding(itemPadding),
+                modifier = Modifier.padding(ITEM_PADDING),
                 text = article.title.toString(),
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 2,
@@ -134,7 +134,7 @@ private fun HeadlineCard(
 
             Row {
                 Column(
-                    modifier = Modifier.padding(itemPadding)
+                    modifier = Modifier.padding(ITEM_PADDING)
                 ) {
                     Text(
                         text = article.source.toString(),
