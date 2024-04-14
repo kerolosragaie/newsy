@@ -11,6 +11,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.likander.newsy.core.theme.NewsyTheme
+import com.likander.newsy.core.theme.defaultPadding
 
 @Composable
 fun LoadingContent(
@@ -34,6 +36,7 @@ fun LoadingContent(
 ) {
     Box(
         modifier = modifier
+            .padding(defaultPadding)
             .fillMaxSize()
             .background(if (isOverlay) Color(0xCC000000) else Color.Transparent)
             .testTag(LOADING_CONTAINER_ID)
