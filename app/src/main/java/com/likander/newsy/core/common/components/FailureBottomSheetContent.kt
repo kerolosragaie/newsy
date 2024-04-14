@@ -1,6 +1,5 @@
 package com.likander.newsy.core.common.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +27,7 @@ import com.likander.newsy.core.theme.NewsyTheme
 
 @Composable
 fun FailureBottomSheetContent(
-    @StringRes title: Int,
+    title: String,
     description: String,
     onOkClick: () -> Unit
 ) {
@@ -47,7 +46,7 @@ fun FailureBottomSheetContent(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(title),
+                text = title,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.testTag(FAILURE_BOTTOM_SHEET_TITLE_ID)
             )
@@ -76,8 +75,8 @@ fun FailureBottomSheetContent(
 private fun FailureBottomSheetContentPreview() {
     NewsyTheme {
         FailureBottomSheetContent(
-            title = R.string.failure,
-            description = stringResource(id = R.string.something_went_wrong),
+            title = stringResource(R.string.failure),
+            description = stringResource(R.string.something_went_wrong),
             onOkClick = { }
         )
     }

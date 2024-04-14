@@ -11,6 +11,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,7 +29,8 @@ import com.likander.newsy.core.theme.NewsyTheme
 @Composable
 fun LoadingContent(
     modifier: Modifier = Modifier,
-    isOverlay: Boolean = false
+    isOverlay: Boolean = false,
+    color: Color = MaterialTheme.colorScheme.inverseOnSurface,
 ) {
     Box(
         modifier = modifier
@@ -40,6 +42,7 @@ fun LoadingContent(
             modifier = Modifier
                 .align(Alignment.Center)
                 .testTag(LOADING_INDICATOR_ID),
+            color = color
         )
     }
 }
@@ -48,7 +51,7 @@ fun LoadingContent(
 private fun LoadingSpinnerIndicator(
     modifier: Modifier = Modifier,
     sections: Int = 12,
-    color: Color = Color.White,
+    color: Color,
     sectionLength: Dp = 8.dp,
     sectionWidth: Dp = 4.dp
 ) {

@@ -11,17 +11,10 @@ fun PaginationLoadingItem(
     onSuccess: @Composable () -> Unit,
 ) {
     when (pagingState) {
-        is LoadState.Error -> {
-            val error = pagingState.error
-            onError(error)
-        }
+        is LoadState.Error -> onError(pagingState.error)
 
-        is LoadState.Loading -> {
-            onLoading()
-        }
+        is LoadState.Loading -> onLoading()
 
-        else -> {
-            onSuccess()
-        }
+        else -> onSuccess()
     }
 }

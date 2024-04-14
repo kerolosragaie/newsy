@@ -1,6 +1,5 @@
 package com.likander.newsy.core.common.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -31,9 +30,9 @@ import com.likander.newsy.core.theme.NewsyTheme
 
 @Composable
 fun ConfirmBottomSheetContent(
-    @StringRes title: Int = R.string.confirm,
-    @StringRes description: Int,
-    @StringRes button: Int = R.string.done,
+    title: String = stringResource(R.string.confirm),
+    description: String,
+    button: String = stringResource(id = R.string.done),
     onOkClick: () -> Unit,
     onCancelClick: () -> Unit
 ) {
@@ -47,7 +46,7 @@ fun ConfirmBottomSheetContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(title),
+                    text = title,
                     modifier = Modifier
                         .weight(1.0f)
                         .testTag(CONFIRM_BOTTOM_SHEET_TITLE_ID),
@@ -63,8 +62,10 @@ fun ConfirmBottomSheetContent(
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                modifier = Modifier.testTag(CONFIRM_BOTTOM_SHEET_DESC_ID).fillMaxWidth(),
-                text = stringResource(description),
+                modifier = Modifier
+                    .testTag(CONFIRM_BOTTOM_SHEET_DESC_ID)
+                    .fillMaxWidth(),
+                text = description,
                 style = MaterialTheme.typography.bodySmall,
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -74,7 +75,7 @@ fun ConfirmBottomSheetContent(
                     .testTag(CONFIRM_BOTTOM_SHEET_OK_BTN_ID),
                 onClick = onOkClick
             ) {
-                Text(text = stringResource(button))
+                Text(text = button)
             }
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedButton(
@@ -102,14 +103,15 @@ fun ConfirmBottomSheetContent(
 private fun PreviewConfirmBottomSheetContent() {
     NewsyTheme {
         ConfirmBottomSheetContent(
-            description = R.string.confirm,
+            description = stringResource(R.string.confirm),
             onOkClick = {},
             onCancelClick = {}
         )
     }
 }
 
-internal const val CONFIRMATION_BOTTOM_SHEET_HEADER_ICON_ID = "CONFIRMATION_BOTTOM_SHEET_HEADER_ICON_ID"
+internal const val CONFIRMATION_BOTTOM_SHEET_HEADER_ICON_ID =
+    "CONFIRMATION_BOTTOM_SHEET_HEADER_ICON_ID"
 internal const val CONFIRM_BOTTOM_SHEET_TITLE_ID = "confirm_sheet_title"
 internal const val CONFIRM_BOTTOM_SHEET_DESC_ID = "confirm_sheet_description"
 internal const val CONFIRM_BOTTOM_SHEET_OK_BTN_ID = "confirm_sheet_ok_button"

@@ -1,7 +1,6 @@
 package com.likander.newsy.core.common.components
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,9 +28,9 @@ import com.likander.newsy.core.theme.NewsyTheme
 @Composable
 fun SuccessBottomSheetContent(
     @DrawableRes icon: Int = R.drawable.ic_check,
-    @StringRes title: Int = R.string.success,
-    @StringRes description: Int,
-    @StringRes button: Int = R.string.done,
+    title: String = stringResource(R.string.success),
+    description: String,
+    button: String = stringResource(R.string.done),
     onOkClick: () -> Unit
 ) {
     Surface(contentColor = MaterialTheme.colorScheme.onSurface) {
@@ -50,13 +49,13 @@ fun SuccessBottomSheetContent(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 modifier = Modifier.testTag(SUCCESS_BOTTOM_SHEET_TITLE_ID),
-                text = stringResource(title),
+                text = title,
                 style = MaterialTheme.typography.bodyMedium,
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 modifier = Modifier.testTag(SUCCESS_BOTTOM_SHEET_DESC_ID),
-                text = stringResource(description),
+                text = description,
                 style = MaterialTheme.typography.bodySmall,
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -66,7 +65,7 @@ fun SuccessBottomSheetContent(
                     .testTag(SUCCESS_BOTTOM_SHEET_OK_BTN_ID),
                 onClick = onOkClick
             ) {
-                Text(text = stringResource(button))
+                Text(text = button)
             }
         }
     }
@@ -77,7 +76,7 @@ fun SuccessBottomSheetContent(
 private fun PreviewSuccessBottomSheetContent() {
     NewsyTheme {
         SuccessBottomSheetContent(
-            description = R.string.success,
+            description = stringResource(R.string.success),
             onOkClick = {}
         )
     }

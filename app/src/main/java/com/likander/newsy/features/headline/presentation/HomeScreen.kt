@@ -82,8 +82,8 @@ fun HomeScreen(
         sheetState = sheetState,
         sheetContent = {
             FailureBottomSheetContent(
-                title = R.string.failure,
-                description = failureMessage ?: stringResource(id = R.string.something_went_wrong),
+                title = stringResource(R.string.failure),
+                description = failureMessage ?: stringResource(R.string.something_went_wrong),
                 onOkClick = {
                     closeBottomSheet.invoke()
                     viewModel.loadArticles()
