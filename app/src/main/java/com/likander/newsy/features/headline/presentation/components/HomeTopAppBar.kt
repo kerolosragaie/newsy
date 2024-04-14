@@ -32,9 +32,8 @@ fun HomeTopAppBar(
     openDrawer: () -> Unit,
     onSearch: () -> Unit,
     topAppBarState: TopAppBarState = rememberTopAppBarState(),
-    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
-        topAppBarState
-    ),
+    scrollBehavior: TopAppBarScrollBehavior =
+        TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
 ) {
 
     CenterAlignedTopAppBar(

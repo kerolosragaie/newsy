@@ -72,8 +72,6 @@ fun HomeScreen(
     LaunchedEffect(headlineArticles.loadState.mediator?.refresh) {
         when (headlineArticles.loadState.mediator?.refresh) {
             is LoadState.Error -> sheetState.show()
-            is LoadState.Loading -> sheetState.hide()
-            is LoadState.NotLoading -> sheetState.hide()
             else -> sheetState.hide()
         }
     }

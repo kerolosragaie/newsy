@@ -35,15 +35,12 @@ fun DiscoverItems(
         categories = categories,
         onCategoryChange = onCategoryChange
     )
-
     PaginationLoadingItem(
         pagingState = discoverArticles.loadState.mediator?.refresh,
         onError = { e ->
             showFailureBottomSheet.invoke(e.message ?: "unknown error")
         },
         onLoading = { LoadingContent() },
-        onSuccess = {
-            
-        }
+        onSuccess = {}
     )
 }

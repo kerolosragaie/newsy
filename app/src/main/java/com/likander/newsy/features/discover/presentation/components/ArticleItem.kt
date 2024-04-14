@@ -20,15 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.likander.newsy.R
+import com.likander.newsy.core.common.components.NetworkImage
 import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.theme.itemPadding
 import com.likander.newsy.core.utils.Utils
@@ -41,11 +36,6 @@ fun ArticleItem(
     onClick: (Article) -> Unit,
     onFavouriteChange: (Article) -> Unit,
 ) {
-    val imageRequest = ImageRequest.Builder(LocalContext.current)
-        .data(article.urlToImage)
-        .crossfade(true)
-        .build()
-
     val favouriteIcon =
         if (article.favourite) Icons.Default.BookmarkAdded
         else Icons.Default.BookmarkAdd
@@ -61,14 +51,9 @@ fun ArticleItem(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .weight(2f),
-                model = imageRequest,
-                contentDescription = "Article item image",
-                placeholder = painterResource(id = R.drawable.news_place_holder),
-                error = painterResource(id = R.drawable.news_place_holder),
-                contentScale = ContentScale.Crop
+            NetworkImage(
+                modifier = Modifier.weight(2f),
+                url = article.urlToImage.toString()
             )
             Spacer(modifier = Modifier.weight(0.1f))
             Column(

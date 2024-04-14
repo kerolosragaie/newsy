@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkAdded
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,16 +32,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.likander.newsy.R
+import com.likander.newsy.core.common.components.NetworkImage
 import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.theme.defaultPadding
 import com.likander.newsy.core.theme.itemPadding
@@ -68,7 +63,7 @@ fun HeadlineItem(
     var triggerAnimationKey by remember { mutableStateOf(false) }
 
     LaunchedEffect(triggerAnimationKey, isDragged) {
-        delay(6000)
+        delay(5000)
         with(pagerState) {
             val targetItemIndex = (currentPage + 1) % articleCount
             animateScrollToPage(targetItemIndex)
@@ -104,13 +99,11 @@ fun HeadlineItem(
                 .align(Alignment.End),
             onClick = onViewMoreClick,
         ) {
-            Text(text = stringResource(id = R.string.view_more))
+            Text(text = stringResource(R.string.view_more))
         }
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HeadlineCard(
     modifier: Modifier = Modifier,
@@ -118,9 +111,6 @@ private fun HeadlineCard(
     onCardClick: (Article) -> Unit,
     onFavouriteChange: (Article) -> Unit,
 ) {
-    val imageRequest = ImageRequest.Builder(LocalContext.current)
-        .data(article.urlToImage)
-        .crossfade(true).build()
     val favouriteIcon =
         if (article.favourite) Icons.Default.BookmarkAdded else Icons.Default.Bookmark
 
@@ -129,13 +119,9 @@ private fun HeadlineCard(
         onClick = { onCardClick.invoke(article) },
     ) {
         Column {
-            AsyncImage(
+            NetworkImage(
                 modifier = Modifier.height(150.dp),
-                model = imageRequest,
-                contentDescription = "news image",
-                placeholder = painterResource(R.drawable.ideogram_2_),
-                error = painterResource(id = R.drawable.ideogram_2_),
-                contentScale = ContentScale.Crop,
+                url = article.urlToImage.toString()
             )
 
             Text(
