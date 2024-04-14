@@ -6,7 +6,7 @@ import androidx.paging.LoadState
 @Composable
 fun PaginationLoadingItem(
     pagingState: LoadState?,
-    onError: (e: Throwable) -> Unit,
+    onError: @Composable (e: Throwable) -> Unit,
     onLoading: @Composable () -> Unit,
     onSuccess: @Composable () -> Unit,
 ) {

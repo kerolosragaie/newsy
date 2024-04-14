@@ -34,14 +34,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.likander.newsy.R
 import com.likander.newsy.core.common.components.NetworkImage
-import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.theme.DEFAULT_PADDING
 import com.likander.newsy.core.theme.ITEM_PADDING
 import com.likander.newsy.core.theme.ITEM_SPACING
+import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.utils.Utils
 import com.likander.newsy.features.headline.domain.model.Article
 import kotlinx.coroutines.delay
@@ -123,15 +124,14 @@ private fun HeadlineCard(
                 modifier = Modifier.height(150.dp),
                 url = article.urlToImage.toString()
             )
-
             Text(
                 modifier = Modifier.padding(ITEM_PADDING),
                 text = article.title.toString(),
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 2,
                 fontWeight = FontWeight.Bold,
+                overflow = TextOverflow.Ellipsis
             )
-
             Row {
                 Column(
                     modifier = Modifier.padding(ITEM_PADDING)

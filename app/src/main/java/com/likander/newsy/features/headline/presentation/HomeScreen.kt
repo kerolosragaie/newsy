@@ -161,18 +161,10 @@ private fun HeadlinesList(
                 homeUiState = homeUiState,
                 categories = categories,
                 discoverArticles = discoverArticles,
-                onItemClick = {
-
-                },
-                onCategoryChange = {
-
-                },
-                onFavouriteArticleChange = {
-
-                },
-                showFailureBottomSheet = {
-
-                }
+                onItemClick = {},
+                onCategoryChange = {},
+                onFavouriteArticleChange = {},
+                showFailureBottomSheet = {}
             )
         }
     }
@@ -191,11 +183,9 @@ private fun HeadlineItems(
     PaginationLoadingItem(
         pagingState = headlineArticles.loadState.mediator?.refresh,
         onError = { e ->
-            showFailureBottomSheet.invoke(e.message ?: "unknown error")
+            showFailureBottomSheet.invoke(e.message ?: stringResource(R.string.unknown_error))
         },
-        onLoading = {
-            LoadingContent()
-        },
+        onLoading = { LoadingContent() },
         onSuccess = {
             HeadlineItem(
                 articles = articlesList,
