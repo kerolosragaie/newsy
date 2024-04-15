@@ -1,0 +1,2 @@
+- name: Get local.properties from secrets
+  run: echo "${{secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
