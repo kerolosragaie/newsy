@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.BookmarkAdded
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -49,7 +50,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HeadlineItem(
+fun HeadlineItems(
     articles: List<Article>,
     articleCount: Int,
     onCardClick: (Article) -> Unit,
@@ -112,9 +113,6 @@ private fun HeadlineCard(
     onCardClick: (Article) -> Unit,
     onFavouriteChange: (Article) -> Unit,
 ) {
-    val favouriteIcon =
-        if (article.favourite) Icons.Default.BookmarkAdded else Icons.Default.Bookmark
-
     Card(
         modifier = modifier,
         onClick = { onCardClick.invoke(article) },
@@ -147,10 +145,23 @@ private fun HeadlineCard(
                     )
                 }
                 IconButton(onClick = { onFavouriteChange.invoke(article) }) {
-                    Icon(
-                        imageVector = favouriteIcon,
-                        contentDescription = "favourite",
-                    )
+                    AnimatedContent(targetState = article.favourite, label = "") {
+                        when (it) {
+                            true ->
+                                Icon(
+                                    imageVector = Icons.Default.BookmarkAdded,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    contentDescription = "favourite Icon Btn"
+                                )
+
+                            false ->
+                                Icon(
+                                    imageVector = Icons.Default.Bookmark,
+                                    tint = LocalContentColor.current,
+                                    contentDescription = "favourite Icon Btn"
+                                )
+                        }
+                    }
                 }
             }
         }
@@ -162,7 +173,7 @@ private fun HeadlineCard(
 private fun PrevHeadlineItem() {
     NewsyTheme {
         Surface {
-            HeadlineItem(
+            HeadlineItems(
                 articles = fakeArticles,
                 articleCount = fakeArticles.size,
                 onCardClick = {},

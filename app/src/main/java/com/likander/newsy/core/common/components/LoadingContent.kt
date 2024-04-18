@@ -1,6 +1,5 @@
 package com.likander.newsy.core.common.components
 
-import android.content.res.Configuration
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.animateValue
@@ -22,11 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.theme.DEFAULT_PADDING
+import com.likander.newsy.core.theme.NewsyTheme
 
 @Composable
 fun LoadingContent(
@@ -97,13 +96,7 @@ private fun LoadingSpinnerIndicator(
     }
 }
 
-@Preview("Light", showSystemUi = true, showBackground = true)
-@Preview(
-    "Dark",
-    showSystemUi = true,
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@PreviewLightDark
 @Composable
 private fun PreviewLoadingContent() {
     NewsyTheme {

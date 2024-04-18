@@ -1,5 +1,6 @@
 package com.likander.newsy.features.headline.presentation.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -39,6 +40,7 @@ class HomeViewModel @Inject constructor(
                 updateDiscoverArticles()
             }
             is HomeUiEvents.OnHeadLineFavouriteChange -> onHeadLineFavouriteChange(homeUiEvents)
+            is HomeUiEvents.OnDiscoverFavouriteChange -> onDiscoverFavouriteChange(homeUiEvents)
             is HomeUiEvents.PreferencePanelToggle -> TODO()
             is HomeUiEvents.ViewMoreClicked -> TODO()
         }
@@ -64,8 +66,8 @@ class HomeViewModel @Inject constructor(
         homeUiState = homeUiState.copy(
             discoverArticles = discoverUseCases.fetchDiscoverArticlesUseCase(
                 category = homeUiState.selectedDiscoverCategory.category,
-                country = "en",
-                language = "us",
+                country = Utils.countryCodeList[0].code,
+                language = Utils.languageCodeList[0].code,
             ).cachedIn(viewModelScope)
         )
     }
@@ -76,8 +78,15 @@ class HomeViewModel @Inject constructor(
             val updatedArticle = homeUiEvents.article.copy(
                 favourite = !isFavourite
             )
-            headlineUseCases.updateHeadlineFavouriteUseCase(
-                updatedArticle
+            headlineUseCases.updateHeadlineFavouriteUseCase(updatedArticle)
+        }
+
+    private fun onDiscoverFavouriteChange(homeUiEvents: HomeUiEvents.OnDiscoverFavouriteChange) =
+        viewModelScope.launch {
+            val isFavourite = homeUiEvents.article.favourite
+            val updatedArticle = homeUiEvents.article.copy(
+                favourite = !isFavourite
             )
+            discoverUseCases.updateFavouriteArticleUseCase(updatedArticle)
         }
 }

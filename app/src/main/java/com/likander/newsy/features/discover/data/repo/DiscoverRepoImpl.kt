@@ -21,10 +21,10 @@ class DiscoverRepoImpl(
         country: String,
         language: String,
     ): Flow<PagingData<Article>> = discoverLocalDataSource.getDiscoverArticles(
-        discoverRemoteDataSource.getDiscoverApi(),
-        category,
-        country,
-        language
+        discoverApi = discoverRemoteDataSource.getDiscoverApi(),
+        category = category,
+        country = country,
+        language = language
     ).map { discoverArticleEntityPagingData ->
         discoverArticleEntityPagingData.map {
             mapper.toModel(it)

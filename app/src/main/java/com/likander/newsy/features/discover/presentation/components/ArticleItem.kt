@@ -1,5 +1,6 @@
 package com.likander.newsy.features.discover.presentation.components
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,11 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BookmarkAdd
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkAdded
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,10 +38,6 @@ fun ArticleItem(
     onClick: (Article) -> Unit,
     onFavouriteChange: (Article) -> Unit,
 ) {
-    val favouriteIcon =
-        if (article.favourite) Icons.Default.BookmarkAdded
-        else Icons.Default.BookmarkAdd
-
     Card(
         modifier = Modifier
             .height(150.dp)
@@ -86,10 +84,23 @@ fun ArticleItem(
                     IconButton(
                         onClick = { onFavouriteChange(article) }
                     ) {
-                        Icon(
-                            imageVector = favouriteIcon,
-                            contentDescription = "favourite Icon Btn"
-                        )
+                        AnimatedContent(targetState = article.favourite, label = "") {
+                            when (it) {
+                                true ->
+                                    Icon(
+                                        imageVector = Icons.Default.BookmarkAdded,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        contentDescription = "favourite Icon Btn"
+                                    )
+
+                                false ->
+                                    Icon(
+                                        imageVector = Icons.Default.Bookmark,
+                                        tint = LocalContentColor.current,
+                                        contentDescription = "favourite Icon Btn"
+                                    )
+                            }
+                        }
                     }
                 }
             }

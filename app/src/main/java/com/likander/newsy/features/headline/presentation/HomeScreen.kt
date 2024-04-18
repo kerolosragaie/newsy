@@ -34,10 +34,10 @@ import com.likander.newsy.core.common.components.PaginationLoadingItem
 import com.likander.newsy.core.theme.ITEM_SPACING
 import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.utils.ArticleCategory
-import com.likander.newsy.features.discover.presentation.components.DiscoverItems
+import com.likander.newsy.features.discover.presentation.components.discoverItems
 import com.likander.newsy.features.headline.domain.model.Article
 import com.likander.newsy.features.headline.presentation.components.HeaderTitle
-import com.likander.newsy.features.headline.presentation.components.HeadlineItem
+import com.likander.newsy.features.headline.presentation.components.HeadlineItems
 import com.likander.newsy.features.headline.presentation.components.HomeTopAppBar
 import com.likander.newsy.features.headline.presentation.components.fakeArticles
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeUiEvents
@@ -115,6 +115,16 @@ fun HomeScreen(
                         HomeUiEvents.OnHeadLineFavouriteChange(article)
                     )
                 },
+                onFavouriteDiscoverChange = { article ->
+                    viewModel.onHomeUiEvents(
+                        HomeUiEvents.OnDiscoverFavouriteChange(article)
+                    )
+                },
+                onDiscoverCategoryChange = {
+                    viewModel.onHomeUiEvents(
+                        HomeUiEvents.CategoryChange(it)
+                    )
+                }
             )
         }
     }
@@ -131,6 +141,8 @@ private fun HeadlinesList(
     onViewMoreClick: () -> Unit,
     onHeadlineItemClick: (id: Int) -> Unit,
     onFavouriteHeadlineChange: (Article) -> Unit,
+    onFavouriteDiscoverChange: (Article) -> Unit,
+    onDiscoverCategoryChange: (ArticleCategory) -> Unit
 ) {
     val categories = ArticleCategory.entries
 
@@ -156,17 +168,16 @@ private fun HeadlinesList(
             )
         }
 
-        item {
-            DiscoverItems(
-                homeUiState = homeUiState,
-                categories = categories,
-                discoverArticles = discoverArticles,
-                onItemClick = {},
-                onCategoryChange = {},
-                onFavouriteArticleChange = {},
-                showFailureBottomSheet = {}
-            )
-        }
+        discoverItems(
+            homeUiState = homeUiState,
+            categories = categories,
+            discoverArticles = discoverArticles,
+            onItemClick = {
+
+            },
+            onCategoryChange = onDiscoverCategoryChange,
+            onFavouriteArticleChange = onFavouriteDiscoverChange,
+        )
     }
 }
 
@@ -187,7 +198,7 @@ private fun HeadlineItems(
         },
         onLoading = { LoadingContent() },
         onSuccess = {
-            HeadlineItem(
+            HeadlineItems(
                 articles = articlesList,
                 articleCount = articlesList.size,
                 onCardClick = {
@@ -215,7 +226,9 @@ private fun PrevHomeScreen() {
                 onFavouriteHeadlineChange = {},
                 showFailureBottomSheet = {},
                 discoverArticles = headlineArticles.collectAsLazyPagingItems(),
-                homeUiState = HomeUiState()
+                homeUiState = HomeUiState(),
+                onDiscoverCategoryChange = {},
+                onFavouriteDiscoverChange = {}
             )
         }
     }

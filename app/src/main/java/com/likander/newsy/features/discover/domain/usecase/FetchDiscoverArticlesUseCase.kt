@@ -12,5 +12,9 @@ class FetchDiscoverArticlesUseCase(
         category: String,
         country: String,
         language: String,
-    ): Flow<PagingData<Article>> = discoverRepo.fetchDiscoverArticles(category, country, language)
+    ): Flow<PagingData<Article>> = discoverRepo.fetchDiscoverArticles(
+        category = category,
+        country = country,
+        language = language
+    )
 }
