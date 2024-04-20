@@ -28,8 +28,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.likander.newsy.R
 import com.likander.newsy.core.common.components.BottomSheet
 import com.likander.newsy.core.common.components.FailureBottomSheetContent
-import com.likander.newsy.core.common.components.LoadingContent
-import com.likander.newsy.core.common.components.PaginationLoadingItem
 import com.likander.newsy.core.theme.ITEM_SPACING
 import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.utils.ArticleCategory
@@ -156,22 +154,12 @@ private fun ScreenContent(
         }
 
         item {
-            PaginationLoadingItem(
-                pagingState = headlineArticles.loadState.mediator?.refresh,
-                onError = { e ->
-                    showFailureBottomSheet.invoke(
-                        e.message ?: stringResource(R.string.unknown_error)
-                    )
-                },
-                onLoading = { LoadingContent() },
-                onSuccess = {
-                    HeadlineItems(
-                        articles = headlineArticles,
-                        onCardClick = onHeadlineItemClick,
-                        onViewMoreClick = onViewMoreClick,
-                        onFavouriteChange = onFavouriteHeadlineChange,
-                    )
-                }
+            HeadlineItems(
+                articles = headlineArticles,
+                showFailureBottomSheet = showFailureBottomSheet,
+                onCardClick = onHeadlineItemClick,
+                onViewMoreClick = onViewMoreClick,
+                onFavouriteChange = onFavouriteHeadlineChange,
             )
         }
 
