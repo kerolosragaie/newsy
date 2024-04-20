@@ -38,6 +38,7 @@ class HomeViewModel @Inject constructor(
                 updateCategory(homeUiEvents)
                 updateDiscoverArticles()
             }
+
             is HomeUiEvents.OnHeadLineFavouriteChange -> onHeadLineFavouriteChange(homeUiEvents)
             is HomeUiEvents.OnDiscoverFavouriteChange -> onDiscoverFavouriteChange(homeUiEvents)
             is HomeUiEvents.PreferencePanelToggle -> TODO()

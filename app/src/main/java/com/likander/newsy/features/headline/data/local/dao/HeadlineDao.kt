@@ -27,6 +27,6 @@ interface HeadlineDao {
     @Delete
     suspend fun removeFavouriteArticle(headlineArticleEntity: HeadlineArticleEntity)
 
-    @Query("UPDATE headline_articles_table SET favourite= :isFavourite WHERE id=:id")
+    @Query("UPDATE headline_articles_table SET favourite=:isFavourite WHERE id=:id")
     suspend fun updateFavouriteArticle(isFavourite: Boolean, id: Int): Int
 }
