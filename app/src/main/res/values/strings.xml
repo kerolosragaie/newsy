@@ -10,4 +10,7 @@
     <string name="view_more">View more</string>
     <string name="unknown_error">Unknown error</string>
     <string name="no_data_found">No data found</string>
+    <string name="hot_news">Hot News</string>
+    <string name="discover_news">Discover News</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -37,14 +37,14 @@ fun ErrorContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = title ?: stringResource(id = R.string.failure),
+                text = title ?: stringResource(R.string.failure),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.error,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(20.dp))
             Text(
-                text = message ?: stringResource(id = R.string.unknown_error),
+                text = message ?: stringResource(R.string.unknown_error),
                 textAlign = TextAlign.Center
             )
             retryFunc?.let {
@@ -53,7 +53,7 @@ fun ErrorContent(
                     onClick = { retryFunc() }
                 ) {
                     Text(
-                        text = "Retry"
+                        text = stringResource(R.string.retry)
                     )
                 }
             }

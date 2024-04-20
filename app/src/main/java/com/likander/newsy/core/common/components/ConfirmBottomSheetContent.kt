@@ -32,7 +32,7 @@ import com.likander.newsy.core.theme.NewsyTheme
 fun ConfirmBottomSheetContent(
     title: String = stringResource(R.string.confirm),
     description: String,
-    button: String = stringResource(id = R.string.done),
+    button: String = stringResource(R.string.done),
     onOkClick: () -> Unit,
     onCancelClick: () -> Unit
 ) {

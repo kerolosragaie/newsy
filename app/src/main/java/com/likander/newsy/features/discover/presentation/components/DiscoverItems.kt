@@ -25,13 +25,13 @@ fun LazyListScope.discoverItems(
     homeUiState: HomeUiState,
     categories: List<ArticleCategory>,
     discoverArticles: LazyPagingItems<Article>,
-    onItemClick: (id: Int) -> Unit,
+    onItemClick: (Article) -> Unit,
     onCategoryChange: (articleCategory: ArticleCategory) -> Unit,
     onFavouriteArticleChange: (article: Article) -> Unit,
 ) {
     item {
         HeaderTitle(
-            title = "Discover News",
+            title = stringResource(R.string.discover_news),
             icon = Icons.Default.Newspaper,
         )
         Spacer(modifier = Modifier.size(ITEM_SPACING))
@@ -63,7 +63,7 @@ fun LazyListScope.discoverItems(
                 discoverArticles[index]?.let { article ->
                     ArticleItem(
                         article = article,
-                        onClick = { onItemClick.invoke(index) },
+                        onClick = onItemClick,
                         onFavouriteChange = onFavouriteArticleChange
                     )
                 }

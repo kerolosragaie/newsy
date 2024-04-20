@@ -18,6 +18,7 @@ class MainActivity : ComponentActivity() {
                     openDrawer = {},
                     onSearch = {},
                     onHeadlineItemClick = {},
+                    onDiscoverItemClick = {},
                 )
             }
         }

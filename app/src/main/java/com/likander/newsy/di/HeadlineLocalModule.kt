@@ -16,15 +16,12 @@ import javax.inject.Singleton
 object HeadlineLocalModule {
     @Provides
     @Singleton
-    fun providesHeadlineDao(
-        database: NewsArticleDatabase,
-    ): HeadlineDao = database.headlineDao()
+    fun providesHeadlineDao(database: NewsArticleDatabase): HeadlineDao = database.headlineDao()
 
     @Provides
     @Singleton
-    fun providesHeadlineRemoteKeyDao(
-        database: NewsArticleDatabase,
-    ): HeadlineRemoteKeyDao = database.headlineRemoteKeyDao()
+    fun providesHeadlineRemoteKeyDao(database: NewsArticleDatabase): HeadlineRemoteKeyDao =
+        database.headlineRemoteKeyDao()
 
     @Provides
     @Singleton
@@ -34,6 +31,6 @@ object HeadlineLocalModule {
     ): HeadlineLocalDataSource =
         HeadlineLocalDataSourceImpl(
             headlineDao = headlineDao,
-            newsArticleDatabase = newsArticleDatabase,
+            newsArticleDatabase = newsArticleDatabase
         )
 }

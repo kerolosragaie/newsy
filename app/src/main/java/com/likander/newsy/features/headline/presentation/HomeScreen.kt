@@ -1,6 +1,6 @@
 package com.likander.newsy.features.headline.presentation
 
-import androidx.compose.foundation.layout.PaddingValues
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -47,12 +46,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     onViewMoreClick: () -> Unit,
-    onHeadlineItemClick: (id: Int) -> Unit,
+    onHeadlineItemClick: (Article) -> Unit,
+    onDiscoverItemClick: (Article) -> Unit,
     openDrawer: () -> Unit,
     onSearch: () -> Unit,
 ) {
@@ -96,10 +97,9 @@ fun HomeScreen(
                     onSearch = onSearch,
                 )
             },
-        ) { innerPadding ->
-            HeadlinesList(
+        ) { _ ->
+            ScreenContent(
                 homeUiState = viewModel.homeUiState,
-                contentPadding = innerPadding,
                 headlineArticles = headlineArticles,
                 discoverArticles = discoverArticles,
                 showFailureBottomSheet = {
@@ -110,6 +110,7 @@ fun HomeScreen(
                 },
                 onViewMoreClick = onViewMoreClick,
                 onHeadlineItemClick = onHeadlineItemClick,
+                onDiscoverItemClick = onDiscoverItemClick,
                 onFavouriteHeadlineChange = { article ->
                     viewModel.onHomeUiEvents(
                         HomeUiEvents.OnHeadLineFavouriteChange(article)
@@ -131,40 +132,48 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HeadlinesList(
+private fun ScreenContent(
     modifier: Modifier = Modifier,
     homeUiState: HomeUiState,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
     headlineArticles: LazyPagingItems<Article>,
     discoverArticles: LazyPagingItems<Article>,
     showFailureBottomSheet: (error: String) -> Unit,
     onViewMoreClick: () -> Unit,
-    onHeadlineItemClick: (id: Int) -> Unit,
+    onHeadlineItemClick: (Article) -> Unit,
+    onDiscoverItemClick: (Article) -> Unit,
     onFavouriteHeadlineChange: (Article) -> Unit,
     onFavouriteDiscoverChange: (Article) -> Unit,
     onDiscoverCategoryChange: (ArticleCategory) -> Unit
 ) {
     val categories = ArticleCategory.entries
+    val headlineArticlesList = headlineArticles.itemSnapshotList.items
 
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = contentPadding,
-    ) {
+    LazyColumn(modifier = modifier) {
         item {
             HeaderTitle(
-                title = "Hot News",
+                title = stringResource(R.string.hot_news),
                 icon = Icons.Default.LocalFireDepartment,
             )
             Spacer(modifier = Modifier.size(ITEM_SPACING))
         }
 
         item {
-            HeadlineItems(
-                headlineArticles = headlineArticles,
-                showFailureBottomSheet = showFailureBottomSheet,
-                onViewMoreClick = onViewMoreClick,
-                onHeadlineItemClick = onHeadlineItemClick,
-                onFavouriteHeadlineChange = onFavouriteHeadlineChange
+            PaginationLoadingItem(
+                pagingState = headlineArticles.loadState.mediator?.refresh,
+                onError = { e ->
+                    showFailureBottomSheet.invoke(
+                        e.message ?: stringResource(R.string.unknown_error)
+                    )
+                },
+                onLoading = { LoadingContent() },
+                onSuccess = {
+                    HeadlineItems(
+                        articles = headlineArticlesList,
+                        onCardClick = onHeadlineItemClick,
+                        onViewMoreClick = onViewMoreClick,
+                        onFavouriteChange = { onFavouriteHeadlineChange.invoke(it) },
+                    )
+                }
             )
         }
 
@@ -172,45 +181,12 @@ private fun HeadlinesList(
             homeUiState = homeUiState,
             categories = categories,
             discoverArticles = discoverArticles,
-            onItemClick = {
-
-            },
+            onItemClick = onDiscoverItemClick,
             onCategoryChange = onDiscoverCategoryChange,
             onFavouriteArticleChange = onFavouriteDiscoverChange,
         )
     }
 }
-
-@Composable
-private fun HeadlineItems(
-    headlineArticles: LazyPagingItems<Article>,
-    showFailureBottomSheet: (error: String) -> Unit,
-    onViewMoreClick: () -> Unit,
-    onHeadlineItemClick: (id: Int) -> Unit,
-    onFavouriteHeadlineChange: (Article) -> Unit,
-) {
-    val articlesList = headlineArticles.itemSnapshotList.items
-
-    PaginationLoadingItem(
-        pagingState = headlineArticles.loadState.mediator?.refresh,
-        onError = { e ->
-            showFailureBottomSheet.invoke(e.message ?: stringResource(R.string.unknown_error))
-        },
-        onLoading = { LoadingContent() },
-        onSuccess = {
-            HeadlineItems(
-                articles = articlesList,
-                articleCount = articlesList.size,
-                onCardClick = {
-                    onHeadlineItemClick.invoke(it.id)
-                },
-                onViewMoreClick = onViewMoreClick,
-                onFavouriteChange = onFavouriteHeadlineChange,
-            )
-        }
-    )
-}
-
 
 @PreviewLightDark
 @Composable
@@ -219,10 +195,11 @@ private fun PrevHomeScreen() {
 
     NewsyTheme {
         Surface {
-            HeadlinesList(
+            ScreenContent(
                 headlineArticles = headlineArticles.collectAsLazyPagingItems(),
                 onViewMoreClick = {},
                 onHeadlineItemClick = {},
+                onDiscoverItemClick = {},
                 onFavouriteHeadlineChange = {},
                 showFailureBottomSheet = {},
                 discoverArticles = headlineArticles.collectAsLazyPagingItems(),

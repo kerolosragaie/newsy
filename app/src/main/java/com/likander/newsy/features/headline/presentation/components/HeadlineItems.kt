@@ -52,14 +52,13 @@ import kotlinx.coroutines.delay
 @Composable
 fun HeadlineItems(
     articles: List<Article>,
-    articleCount: Int,
     onCardClick: (Article) -> Unit,
     onViewMoreClick: () -> Unit,
     onFavouriteChange: (Article) -> Unit,
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
-        pageCount = { articleCount }
+        pageCount = { articles.size }
     )
     val isDragged by pagerState.interactionSource.collectIsDraggedAsState()
     var triggerAnimationKey by remember { mutableStateOf(false) }
@@ -175,7 +174,6 @@ private fun PrevHeadlineItem() {
         Surface {
             HeadlineItems(
                 articles = fakeArticles,
-                articleCount = fakeArticles.size,
                 onCardClick = {},
                 onViewMoreClick = {},
                 onFavouriteChange = {},
