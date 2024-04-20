@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity("headline_table")
-data class HeadlineEntity(
+@Entity("headline_articles_table")
+data class HeadlineArticleEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val author: String? = null,

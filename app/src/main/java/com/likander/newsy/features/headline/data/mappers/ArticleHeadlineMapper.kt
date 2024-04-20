@@ -1,10 +1,10 @@
 package com.likander.newsy.features.headline.data.mappers
 
 import com.likander.newsy.core.common.data.model.ArticleDto
-import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
+import com.likander.newsy.features.headline.data.local.models.HeadlineArticleEntity
 
-fun ArticleDto.toHeadlineEntity(page: Int, category: String): HeadlineEntity =
-    HeadlineEntity(
+fun ArticleDto.toHeadlineEntity(page: Int, category: String): HeadlineArticleEntity =
+    HeadlineArticleEntity(
         author = formatEmptyValue(author, "author"),
         content = formatEmptyValue(content, "content"),
         description = formatEmptyValue(description, "description"),

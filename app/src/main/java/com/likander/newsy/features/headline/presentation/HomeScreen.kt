@@ -66,12 +66,11 @@ fun HomeScreen(
         coroutineScope.launch { sheetState.hide() }
     }
 
-    val homeState = viewModel.homeUiState
-    val headlineArticles = homeState.headlineArticles.collectAsLazyPagingItems()
-    val discoverArticles = homeState.discoverArticles.collectAsLazyPagingItems()
+    val headlineArticles = viewModel.homeUiState.headlineArticles.collectAsLazyPagingItems()
+    val discoverArticles = viewModel.homeUiState.discoverArticles.collectAsLazyPagingItems()
 
-    LaunchedEffect(headlineArticles.loadState.mediator?.refresh) {
-        when (headlineArticles.loadState.mediator?.refresh) {
+    LaunchedEffect(headlineArticles.loadState.refresh) {
+        when (headlineArticles.loadState.refresh) {
             is LoadState.Error -> sheetState.show()
             else -> sheetState.hide()
         }
@@ -146,7 +145,6 @@ private fun ScreenContent(
     onDiscoverCategoryChange: (ArticleCategory) -> Unit
 ) {
     val categories = ArticleCategory.entries
-    val headlineArticlesList = headlineArticles.itemSnapshotList.items
 
     LazyColumn(modifier = modifier) {
         item {
@@ -168,10 +166,10 @@ private fun ScreenContent(
                 onLoading = { LoadingContent() },
                 onSuccess = {
                     HeadlineItems(
-                        articles = headlineArticlesList,
+                        articles = headlineArticles,
                         onCardClick = onHeadlineItemClick,
                         onViewMoreClick = onViewMoreClick,
-                        onFavouriteChange = { onFavouriteHeadlineChange.invoke(it) },
+                        onFavouriteChange = onFavouriteHeadlineChange,
                     )
                 }
             )

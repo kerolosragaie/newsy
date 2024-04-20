@@ -7,10 +7,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import androidx.room.withTransaction
 import com.likander.newsy.core.common.data.local.database.NewsArticleDatabase
-import com.likander.newsy.core.common.data.mappers.Mapper
-import com.likander.newsy.core.common.data.model.ArticleDto
-import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
+import com.likander.newsy.features.headline.data.local.models.HeadlineArticleEntity
 import com.likander.newsy.features.headline.data.local.models.HeadlineRemoteKeyEntity
 import com.likander.newsy.features.headline.data.mappers.toHeadlineEntity
 import com.likander.newsy.features.headline.data.remote.api.HeadlineApi
@@ -24,7 +23,7 @@ class HeadlineMediator(
     private val category: String = "",
     private val country: String = "",
     private val language: String = "",
-) : RemoteMediator<Int, HeadlineEntity>() {
+) : RemoteMediator<Int, HeadlineArticleEntity>() {
 
     override suspend fun initialize(): InitializeAction {
         val cacheTimeout = TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES)
@@ -39,7 +38,7 @@ class HeadlineMediator(
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override suspend fun load(
-        loadType: LoadType, state: PagingState<Int, HeadlineEntity>
+        loadType: LoadType, state: PagingState<Int, HeadlineArticleEntity>
     ): MediatorResult {
         val page: Int = when (loadType) {
             LoadType.REFRESH -> {
@@ -77,31 +76,27 @@ class HeadlineMediator(
 
             val endOfPaginationReached = headlineArticles.isEmpty()
 
-            database.apply {
+            database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    database.apply {
-                        headlineRemoteKeyDao().clearRemoteKeys()
-                        headlineDao().removeAllHeadlineArticles()
-                    }
+                    database.headlineRemoteKeyDao().clearRemoteKeys()
+                    database.headlineDao().removeAllHeadlineArticles()
                 }
                 val prevKey = if (page > 1) page - 1 else null
                 val nextKey = if (endOfPaginationReached) null else page + 1
                 val remoteKeys = headlineArticles.map {
                     HeadlineRemoteKeyEntity(
-                        articleId = it.url!!,
+                        articleId = it.url.toString(),
                         prevKey = prevKey,
                         nextKey = nextKey,
                         currentPage = page,
                     )
                 }
-                database.apply {
-                    headlineRemoteKeyDao().insertAll(remoteKeys)
-                    headlineDao().insertHeadlineArticles(
-                        articles = headlineArticles.map {
-                            it.toHeadlineEntity(page, category)
-                        },
-                    )
-                }
+                database.headlineRemoteKeyDao().insertAll(remoteKeys)
+                database.headlineDao().insertHeadlineArticles(
+                    articles = headlineArticles.map {
+                        it.toHeadlineEntity(page, category)
+                    },
+                )
             }
 
             MediatorResult.Success(endOfPaginationReached)
@@ -113,7 +108,7 @@ class HeadlineMediator(
     }
 
     private suspend fun getRemoteKeyFirstItem(
-        state: PagingState<Int, HeadlineEntity>
+        state: PagingState<Int, HeadlineArticleEntity>
     ): HeadlineRemoteKeyEntity? {
         return state.pages.firstOrNull {
             it.data.isNotEmpty()
@@ -123,7 +118,7 @@ class HeadlineMediator(
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, HeadlineEntity>,
+        state: PagingState<Int, HeadlineArticleEntity>,
     ): HeadlineRemoteKeyEntity? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.url?.let { id ->
@@ -133,12 +128,12 @@ class HeadlineMediator(
     }
 
     private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, HeadlineEntity>,
+        state: PagingState<Int, HeadlineArticleEntity>,
     ): HeadlineRemoteKeyEntity? {
         return state.pages.lastOrNull {
             it.data.isNotEmpty()
         }?.data?.lastOrNull()?.let { article ->
-            database.headlineRemoteKeyDao().getRemoteKeyByArticleId(article.url!!)
+            database.headlineRemoteKeyDao().getRemoteKeyByArticleId(article.url.toString())
         }
     }
 

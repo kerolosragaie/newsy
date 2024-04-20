@@ -1,5 +1,6 @@
 package com.likander.newsy.features.headline.presentation.components
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
@@ -38,6 +39,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.likander.newsy.R
 import com.likander.newsy.core.common.components.NetworkImage
 import com.likander.newsy.core.theme.DEFAULT_PADDING
@@ -47,18 +51,20 @@ import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.utils.Utils
 import com.likander.newsy.features.headline.domain.model.Article
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOf
 
+@SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HeadlineItems(
-    articles: List<Article>,
+    articles: LazyPagingItems<Article>,
     onCardClick: (Article) -> Unit,
     onViewMoreClick: () -> Unit,
     onFavouriteChange: (Article) -> Unit,
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
-        pageCount = { articles.size }
+        pageCount = { articles.itemSnapshotList.size }
     )
     val isDragged by pagerState.interactionSource.collectIsDraggedAsState()
     var triggerAnimationKey by remember { mutableStateOf(false) }
@@ -81,16 +87,19 @@ fun HeadlineItems(
             beyondBoundsPageCount = 0,
             pageSize = PageSize.Fill,
             pageSpacing = ITEM_SPACING,
-        ) { page ->
+            key = { index -> index }
+        ) { pageIndex ->
             AnimatedContent(
-                targetState = page,
+                targetState = pageIndex,
                 label = "Headline animated card",
-            ) { index ->
-                HeadlineCard(
-                    article = articles[index],
-                    onCardClick = onCardClick,
-                    onFavouriteChange = onFavouriteChange,
-                )
+            ) { _ ->
+                articles[pageIndex]?.let { article ->
+                    HeadlineCard(
+                        article = article,
+                        onCardClick = onCardClick,
+                        onFavouriteChange = onFavouriteChange,
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.size(2.dp))
@@ -173,7 +182,7 @@ private fun PrevHeadlineItem() {
     NewsyTheme {
         Surface {
             HeadlineItems(
-                articles = fakeArticles,
+                articles = flowOf(PagingData.from(fakeArticles)).collectAsLazyPagingItems(),
                 onCardClick = {},
                 onViewMoreClick = {},
                 onFavouriteChange = {},
