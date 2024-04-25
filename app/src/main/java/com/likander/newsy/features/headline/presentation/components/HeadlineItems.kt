@@ -38,12 +38,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.likander.newsy.R
-import com.likander.newsy.core.common.components.ErrorContent
 import com.likander.newsy.core.common.components.LoadingContent
 import com.likander.newsy.core.common.components.NetworkImage
+import com.likander.newsy.core.common.components.PaginationLoadingItem
 import com.likander.newsy.core.theme.DEFAULT_PADDING
 import com.likander.newsy.core.theme.ITEM_PADDING
 import com.likander.newsy.core.theme.ITEM_SPACING
@@ -60,29 +59,23 @@ fun HeadlineItems(
     onViewMoreClick: () -> Unit,
     onFavouriteChange: (Article) -> Unit,
 ) {
-    when {
-        articles.loadState.mediator?.refresh is LoadState.Loading ->
-            LoadingContent(modifier = Modifier.height(100.dp))
-
-        articles.loadState.mediator?.refresh is LoadState.Error ->
+    PaginationLoadingItem(
+        pagingState = articles.loadState.mediator?.refresh,
+        onError = {
             showFailureBottomSheet.invoke(stringResource(R.string.something_went_wrong))
-
-        articles.loadState.mediator?.refresh is LoadState.NotLoading && articles.itemCount > 0 ->
+        },
+        onLoading = {
+            LoadingContent(modifier = Modifier.height(100.dp))
+        },
+        onSuccess = {
             HeadlineContent(
                 articles = articles.itemSnapshotList.items,
                 onCardClick = onCardClick,
                 onViewMoreClick = onViewMoreClick,
                 onFavouriteChange = onFavouriteChange,
             )
-
-        articles.loadState.append.endOfPaginationReached && articles.itemCount == 0 ->
-            ErrorContent(
-                title = "",
-                message = stringResource(R.string.no_data_found)
-            )
-
-        else -> Unit
-    }
+        }
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
