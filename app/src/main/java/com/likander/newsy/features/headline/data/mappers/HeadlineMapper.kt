@@ -1,11 +1,11 @@
 package com.likander.newsy.features.headline.data.mappers
 
 import com.likander.newsy.core.common.data.mappers.Mapper
-import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
+import com.likander.newsy.features.headline.data.local.models.HeadlineArticleEntity
 import com.likander.newsy.features.headline.domain.model.Article
 
-class HeadlineMapper : Mapper<HeadlineEntity, Article> {
-    override fun toModel(value: HeadlineEntity): Article = value.run {
+class HeadlineMapper : Mapper<HeadlineArticleEntity, Article> {
+    override fun toModel(value: HeadlineArticleEntity): Article = value.run {
         Article(
             id = id,
             author = author,
@@ -20,9 +20,9 @@ class HeadlineMapper : Mapper<HeadlineEntity, Article> {
         )
     }
 
-    override fun fromModelToEntity(value: Article): HeadlineEntity =
+    override fun fromModelToEntity(value: Article): HeadlineArticleEntity =
         value.run {
-            HeadlineEntity(
+            HeadlineArticleEntity(
                 id = id,
                 author = author,
                 content = content,

@@ -8,12 +8,12 @@ import com.likander.newsy.features.discover.data.local.model.DiscoverArticleEnti
 import com.likander.newsy.features.discover.data.local.model.DiscoverRemoteArticleKeyEntity
 import com.likander.newsy.features.headline.data.local.dao.HeadlineDao
 import com.likander.newsy.features.headline.data.local.dao.HeadlineRemoteKeyDao
-import com.likander.newsy.features.headline.data.local.models.HeadlineEntity
+import com.likander.newsy.features.headline.data.local.models.HeadlineArticleEntity
 import com.likander.newsy.features.headline.data.local.models.HeadlineRemoteKeyEntity
 
 @Database(
     entities = [
-        HeadlineEntity::class,
+        HeadlineArticleEntity::class,
         HeadlineRemoteKeyEntity::class,
         DiscoverArticleEntity::class,
         DiscoverRemoteArticleKeyEntity::class

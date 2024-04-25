@@ -133,7 +133,7 @@ class DiscoverMediator(
         return state.pages.lastOrNull {
             it.data.isNotEmpty()
         }?.data?.lastOrNull()?.let { article ->
-            database.discoverRemoteKeyDao().getRemoteKeyByDiscoverArticleId(article.url!!)
+            database.discoverRemoteKeyDao().getRemoteKeyByDiscoverArticleId(article.url.toString())
         }
     }
 }

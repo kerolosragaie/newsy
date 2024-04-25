@@ -28,8 +28,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.likander.newsy.R
 import com.likander.newsy.core.common.components.BottomSheet
 import com.likander.newsy.core.common.components.FailureBottomSheetContent
-import com.likander.newsy.core.common.components.LoadingContent
-import com.likander.newsy.core.common.components.PaginationLoadingItem
 import com.likander.newsy.core.theme.ITEM_SPACING
 import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.utils.ArticleCategory
@@ -66,12 +64,11 @@ fun HomeScreen(
         coroutineScope.launch { sheetState.hide() }
     }
 
-    val homeState = viewModel.homeUiState
-    val headlineArticles = homeState.headlineArticles.collectAsLazyPagingItems()
-    val discoverArticles = homeState.discoverArticles.collectAsLazyPagingItems()
+    val headlineArticles = viewModel.homeUiState.headlineArticles.collectAsLazyPagingItems()
+    val discoverArticles = viewModel.homeUiState.discoverArticles.collectAsLazyPagingItems()
 
-    LaunchedEffect(headlineArticles.loadState.mediator?.refresh) {
-        when (headlineArticles.loadState.mediator?.refresh) {
+    LaunchedEffect(headlineArticles.loadState.refresh) {
+        when (headlineArticles.loadState.refresh) {
             is LoadState.Error -> sheetState.show()
             else -> sheetState.hide()
         }
@@ -146,7 +143,6 @@ private fun ScreenContent(
     onDiscoverCategoryChange: (ArticleCategory) -> Unit
 ) {
     val categories = ArticleCategory.entries
-    val headlineArticlesList = headlineArticles.itemSnapshotList.items
 
     LazyColumn(modifier = modifier) {
         item {
@@ -158,22 +154,12 @@ private fun ScreenContent(
         }
 
         item {
-            PaginationLoadingItem(
-                pagingState = headlineArticles.loadState.mediator?.refresh,
-                onError = { e ->
-                    showFailureBottomSheet.invoke(
-                        e.message ?: stringResource(R.string.unknown_error)
-                    )
-                },
-                onLoading = { LoadingContent() },
-                onSuccess = {
-                    HeadlineItems(
-                        articles = headlineArticlesList,
-                        onCardClick = onHeadlineItemClick,
-                        onViewMoreClick = onViewMoreClick,
-                        onFavouriteChange = { onFavouriteHeadlineChange.invoke(it) },
-                    )
-                }
+            HeadlineItems(
+                articles = headlineArticles,
+                showFailureBottomSheet = showFailureBottomSheet,
+                onCardClick = onHeadlineItemClick,
+                onViewMoreClick = onViewMoreClick,
+                onFavouriteChange = onFavouriteHeadlineChange,
             )
         }
 

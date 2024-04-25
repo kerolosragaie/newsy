@@ -45,7 +45,7 @@ class DiscoverRepoImpl(
 
     override suspend fun updateFavouriteArticle(article: Article) =
         discoverLocalDataSource.updateFavouriteArticle(
-            article.favourite,
-            article.id
+            id = article.id,
+            isFavourite = article.favourite
         )
 }

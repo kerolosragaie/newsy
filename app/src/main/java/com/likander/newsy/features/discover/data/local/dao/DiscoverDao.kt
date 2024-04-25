@@ -14,18 +14,18 @@ interface DiscoverDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllArticles(list: List<DiscoverArticleEntity>)
 
-    @Query("SELECT * FROM discover_article WHERE category=:category")
+    @Query("SELECT * FROM discover_articles_table WHERE category=:category")
     fun getDiscoverArticles(category: String): PagingSource<Int, DiscoverArticleEntity>
 
-    @Query("SELECT * FROM discover_article WHERE id=:id")
+    @Query("SELECT * FROM discover_articles_table WHERE id=:id")
     fun getDiscoverArticle(id: Int): Flow<DiscoverArticleEntity>
 
-    @Query("DELETE FROM discover_article WHERE favourite=0 AND category=:category")
+    @Query("DELETE FROM discover_articles_table WHERE favourite=0 AND category=:category")
     suspend fun removeAllDiscoverArticles(category: String)
 
     @Delete
     suspend fun removeFavouriteArticle(discoverArticleEntity: DiscoverArticleEntity)
 
-    @Query("UPDATE discover_article SET favourite=:isFavourite WHERE id=:id")
+    @Query("UPDATE discover_articles_table SET favourite=:isFavourite WHERE id=:id")
     suspend fun updateFavouriteArticle(isFavourite: Boolean, id: Int): Int
 }

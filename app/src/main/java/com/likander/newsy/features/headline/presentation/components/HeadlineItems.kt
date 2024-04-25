@@ -38,8 +38,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import com.likander.newsy.R
+import com.likander.newsy.core.common.components.LoadingContent
 import com.likander.newsy.core.common.components.NetworkImage
+import com.likander.newsy.core.common.components.PaginationLoadingItem
 import com.likander.newsy.core.theme.DEFAULT_PADDING
 import com.likander.newsy.core.theme.ITEM_PADDING
 import com.likander.newsy.core.theme.ITEM_SPACING
@@ -48,9 +51,36 @@ import com.likander.newsy.core.utils.Utils
 import com.likander.newsy.features.headline.domain.model.Article
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HeadlineItems(
+    articles: LazyPagingItems<Article>,
+    showFailureBottomSheet: (error: String) -> Unit,
+    onCardClick: (Article) -> Unit,
+    onViewMoreClick: () -> Unit,
+    onFavouriteChange: (Article) -> Unit,
+) {
+    PaginationLoadingItem(
+        pagingState = articles.loadState.mediator?.refresh,
+        onError = {
+            showFailureBottomSheet.invoke(stringResource(R.string.something_went_wrong))
+        },
+        onLoading = {
+            LoadingContent(modifier = Modifier.height(100.dp))
+        },
+        onSuccess = {
+            HeadlineContent(
+                articles = articles.itemSnapshotList.items,
+                onCardClick = onCardClick,
+                onViewMoreClick = onViewMoreClick,
+                onFavouriteChange = onFavouriteChange,
+            )
+        }
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun HeadlineContent(
     articles: List<Article>,
     onCardClick: (Article) -> Unit,
     onViewMoreClick: () -> Unit,
@@ -81,9 +111,10 @@ fun HeadlineItems(
             beyondBoundsPageCount = 0,
             pageSize = PageSize.Fill,
             pageSpacing = ITEM_SPACING,
-        ) { page ->
+            key = { index -> index }
+        ) { pageIndex ->
             AnimatedContent(
-                targetState = page,
+                targetState = pageIndex,
                 label = "Headline animated card",
             ) { index ->
                 HeadlineCard(
@@ -172,7 +203,7 @@ private fun HeadlineCard(
 private fun PrevHeadlineItem() {
     NewsyTheme {
         Surface {
-            HeadlineItems(
+            HeadlineContent(
                 articles = fakeArticles,
                 onCardClick = {},
                 onViewMoreClick = {},

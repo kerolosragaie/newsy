@@ -19,7 +19,6 @@ import com.likander.newsy.core.utils.ArticleCategory
 import com.likander.newsy.features.headline.domain.model.Article
 import com.likander.newsy.features.headline.presentation.components.HeaderTitle
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeUiState
-import kotlin.random.Random.Default.nextInt
 
 fun LazyListScope.discoverItems(
     homeUiState: HomeUiState,
@@ -58,7 +57,7 @@ fun LazyListScope.discoverItems(
         discoverArticles.loadState.refresh is LoadState.NotLoading && discoverArticles.itemCount > 0 -> {
             items(
                 count = discoverArticles.itemCount,
-                key = { discoverArticles[it]?.id ?: nextInt() }
+                key = { index -> index }
             ) { index ->
                 discoverArticles[index]?.let { article ->
                     ArticleItem(
