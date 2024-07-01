@@ -1,4 +1,4 @@
-package com.likander.newsy.features.headline.presentation.viewmodel
+package com.likander.newsy.features.headline.presentation.model
 
 import androidx.paging.PagingData
 import com.likander.newsy.core.utils.ArticleCategory

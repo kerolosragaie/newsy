@@ -15,13 +15,11 @@ import javax.inject.Singleton
 object HeadlineRemoteModule {
     @Provides
     @Singleton
-    fun provideHeadlineApi(retrofit: Retrofit): HeadlineApi = retrofit
-        .create(HeadlineApi::class.java)
+    fun provideHeadlineApi(retrofit: Retrofit): HeadlineApi =
+        retrofit.create(HeadlineApi::class.java)
 
     @Provides
     @Singleton
-    fun provideHeadlineRemoteDataSource(
-        headlineApi: HeadlineApi
-    ): HeadlineRemoteDataSource =
+    fun provideHeadlineRemoteDataSource(headlineApi: HeadlineApi): HeadlineRemoteDataSource =
         HeadlineRemoteDataSourceImpl(headlineApi)
 }

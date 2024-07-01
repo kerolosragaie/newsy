@@ -107,33 +107,24 @@ class DiscoverMediator(
         }
     }
 
-    private suspend fun getRemoteKeyFirstItem(
-        state: PagingState<Int, DiscoverArticleEntity>
-    ): DiscoverRemoteArticleKeyEntity? {
-        return state.pages.firstOrNull {
+    private suspend fun getRemoteKeyFirstItem(state: PagingState<Int, DiscoverArticleEntity>): DiscoverRemoteArticleKeyEntity? =
+        state.pages.firstOrNull {
             it.data.isNotEmpty()
         }?.data?.firstOrNull()?.let { article ->
             database.discoverRemoteKeyDao().getRemoteKeyByDiscoverArticleId(article.url!!)
         }
-    }
 
-    private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, DiscoverArticleEntity>,
-    ): DiscoverRemoteArticleKeyEntity? {
-        return state.anchorPosition?.let { position ->
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, DiscoverArticleEntity>): DiscoverRemoteArticleKeyEntity? =
+        state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.url?.let { id ->
                 database.discoverRemoteKeyDao().getRemoteKeyByDiscoverArticleId(id)
             }
         }
-    }
 
-    private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, DiscoverArticleEntity>,
-    ): DiscoverRemoteArticleKeyEntity? {
-        return state.pages.lastOrNull {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, DiscoverArticleEntity>): DiscoverRemoteArticleKeyEntity? =
+        state.pages.lastOrNull {
             it.data.isNotEmpty()
         }?.data?.lastOrNull()?.let { article ->
             database.discoverRemoteKeyDao().getRemoteKeyByDiscoverArticleId(article.url.toString())
         }
-    }
 }

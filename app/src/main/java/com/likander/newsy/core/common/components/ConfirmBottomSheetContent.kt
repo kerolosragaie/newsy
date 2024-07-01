@@ -111,7 +111,7 @@ private fun PreviewConfirmBottomSheetContent() {
 }
 
 internal const val CONFIRMATION_BOTTOM_SHEET_HEADER_ICON_ID =
-    "CONFIRMATION_BOTTOM_SHEET_HEADER_ICON_ID"
+    "confirmation_bottom_sheet_header_icon_id"
 internal const val CONFIRM_BOTTOM_SHEET_TITLE_ID = "confirm_sheet_title"
 internal const val CONFIRM_BOTTOM_SHEET_DESC_ID = "confirm_sheet_description"
 internal const val CONFIRM_BOTTOM_SHEET_OK_BTN_ID = "confirm_sheet_ok_button"

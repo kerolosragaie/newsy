@@ -23,9 +23,9 @@ import com.likander.newsy.core.theme.NewsyTheme
 
 @Composable
 fun ErrorContent(
-    modifier: Modifier=Modifier,
+    modifier: Modifier = Modifier,
     title: String? = null,
-    message: String?,
+    message: String? = null,
     retryFunc: (() -> Unit)? = null,
 ) {
     Surface {

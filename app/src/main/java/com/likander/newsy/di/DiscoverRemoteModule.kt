@@ -15,8 +15,8 @@ import javax.inject.Singleton
 object DiscoverRemoteModule {
     @Provides
     @Singleton
-    fun provideDiscoverApi(retrofit: Retrofit): DiscoverApi = retrofit
-        .create(DiscoverApi::class.java)
+    fun provideDiscoverApi(retrofit: Retrofit): DiscoverApi =
+        retrofit.create(DiscoverApi::class.java)
 
     @Provides
     @Singleton

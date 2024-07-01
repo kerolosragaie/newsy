@@ -37,8 +37,8 @@ import com.likander.newsy.features.headline.presentation.components.HeaderTitle
 import com.likander.newsy.features.headline.presentation.components.HeadlineItems
 import com.likander.newsy.features.headline.presentation.components.HomeTopAppBar
 import com.likander.newsy.features.headline.presentation.components.fakeArticles
+import com.likander.newsy.features.headline.presentation.model.HomeUiState
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeUiEvents
-import com.likander.newsy.features.headline.presentation.viewmodel.HomeUiState
 import com.likander.newsy.features.headline.presentation.viewmodel.HomeViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -56,9 +56,7 @@ fun HomeScreen(
     onSearch: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val sheetState = rememberModalBottomSheetState(
-        confirmValueChange = { false }
-    )
+    val sheetState = rememberModalBottomSheetState( confirmValueChange = { false } )
     var failureMessage: String? by remember { mutableStateOf(null) }
     val closeBottomSheet = {
         coroutineScope.launch { sheetState.hide() }

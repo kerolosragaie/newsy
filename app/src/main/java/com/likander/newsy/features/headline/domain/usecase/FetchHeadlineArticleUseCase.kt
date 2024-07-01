@@ -10,11 +10,5 @@ class FetchHeadlineArticleUseCase(private val headlineRepo: HeadlineRepo) {
         category: String,
         country: String,
         language: String,
-    ): Flow<PagingData<Article>> =
-        headlineRepo.fetchHeadlineArticle(
-            category,
-            country,
-            language,
-        )
-
+    ): Flow<PagingData<Article>> = headlineRepo.fetchHeadlineArticle(category, country, language)
 }

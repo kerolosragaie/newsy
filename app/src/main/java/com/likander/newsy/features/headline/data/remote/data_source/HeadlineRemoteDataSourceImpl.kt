@@ -3,9 +3,8 @@ package com.likander.newsy.features.headline.data.remote.data_source
 import com.likander.newsy.core.common.data.model.NewsDto
 import com.likander.newsy.features.headline.data.remote.api.HeadlineApi
 
-class HeadlineRemoteDataSourceImpl(
-    private val headlineApi: HeadlineApi
-) : HeadlineRemoteDataSource {
+class HeadlineRemoteDataSourceImpl(private val headlineApi: HeadlineApi) :
+    HeadlineRemoteDataSource {
     override suspend fun getHeadLines(
         key: String,
         category: String,

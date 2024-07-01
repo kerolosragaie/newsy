@@ -29,11 +29,11 @@ class HeadlineMediator(
         val cacheTimeout = TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES)
         return if (System.currentTimeMillis() - (database.headlineRemoteKeyDao().getCreationTime()
                 ?: 0) < cacheTimeout
-        ) {
+        )
             InitializeAction.SKIP_INITIAL_REFRESH
-        } else {
+        else
             InitializeAction.LAUNCH_INITIAL_REFRESH
-        }
+
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
@@ -98,7 +98,6 @@ class HeadlineMediator(
                     },
                 )
             }
-
             MediatorResult.Success(endOfPaginationReached)
         } catch (error: IOException) {
             MediatorResult.Error(error)
@@ -107,34 +106,24 @@ class HeadlineMediator(
         }
     }
 
-    private suspend fun getRemoteKeyFirstItem(
-        state: PagingState<Int, HeadlineArticleEntity>
-    ): HeadlineRemoteKeyEntity? {
-        return state.pages.firstOrNull {
+    private suspend fun getRemoteKeyFirstItem(state: PagingState<Int, HeadlineArticleEntity>): HeadlineRemoteKeyEntity? =
+        state.pages.firstOrNull {
             it.data.isNotEmpty()
         }?.data?.firstOrNull()?.let { article ->
             database.headlineRemoteKeyDao().getRemoteKeyByArticleId(article.url!!)
         }
-    }
 
-    private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, HeadlineArticleEntity>,
-    ): HeadlineRemoteKeyEntity? {
-        return state.anchorPosition?.let { position ->
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, HeadlineArticleEntity>): HeadlineRemoteKeyEntity? =
+        state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.url?.let { id ->
                 database.headlineRemoteKeyDao().getRemoteKeyByArticleId(id)
             }
         }
-    }
 
-    private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, HeadlineArticleEntity>,
-    ): HeadlineRemoteKeyEntity? {
-        return state.pages.lastOrNull {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, HeadlineArticleEntity>): HeadlineRemoteKeyEntity? =
+        state.pages.lastOrNull {
             it.data.isNotEmpty()
         }?.data?.lastOrNull()?.let { article ->
             database.headlineRemoteKeyDao().getRemoteKeyByArticleId(article.url.toString())
         }
-    }
-
 }

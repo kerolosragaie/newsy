@@ -6,35 +6,37 @@ import com.likander.newsy.features.discover.data.local.model.DiscoverArticleEnti
 import com.likander.newsy.features.headline.domain.model.Article
 
 class DiscoverArticleMapper : Mapper<DiscoverArticleEntity, Article> {
-    override fun toModel(value: DiscoverArticleEntity): Article = Article(
-        id = value.id,
-        publishedAt = value.publishedAt,
-        favourite = value.favourite,
-        description = value.description,
-        title = value.title,
-        source = value.source,
-        url = value.url,
-        category = value.category,
-        urlToImage = value.urlToImage,
-        page = value.page,
-        content = value.content,
-        author = value.author
-    )
+    override fun toModel(value: DiscoverArticleEntity): Article =
+        Article(
+            id = value.id,
+            publishedAt = value.publishedAt,
+            favourite = value.favourite,
+            description = value.description,
+            title = value.title,
+            source = value.source,
+            url = value.url,
+            category = value.category,
+            urlToImage = value.urlToImage,
+            page = value.page,
+            content = value.content,
+            author = value.author
+        )
 
-    override fun fromModelToEntity(value: Article): DiscoverArticleEntity = DiscoverArticleEntity(
-        id = value.id,
-        author = value.author,
-        content = value.content,
-        page = value.page,
-        urlToImage = value.urlToImage,
-        url = value.url,
-        category = value.category,
-        source = value.source,
-        title = value.title,
-        publishedAt = value.publishedAt,
-        description = value.description,
-        favourite = value.favourite
-    )
+    override fun fromModelToEntity(value: Article): DiscoverArticleEntity =
+        DiscoverArticleEntity(
+            id = value.id,
+            author = value.author,
+            content = value.content,
+            page = value.page,
+            urlToImage = value.urlToImage,
+            url = value.url,
+            category = value.category,
+            source = value.source,
+            title = value.title,
+            publishedAt = value.publishedAt,
+            description = value.description,
+            favourite = value.favourite
+        )
 
 
 }

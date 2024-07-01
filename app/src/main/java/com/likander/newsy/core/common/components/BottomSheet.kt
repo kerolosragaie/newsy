@@ -13,9 +13,24 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.window.SecureFlagPolicy
+import com.likander.newsy.R
+import com.likander.newsy.core.theme.NewsyTheme
+
+private sealed class BottomSheetType {
+    data object Confirm : BottomSheetType()
+    data object Loading : BottomSheetType()
+    data object Success : BottomSheetType()
+    data object Failure : BottomSheetType()
+}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -52,4 +67,57 @@ fun BottomSheet(
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showSystemUi = true)
+@Composable
+private fun PrevBottomSheet(
+    @PreviewParameter(PreviewParameterBottomSheetType::class) sheetType: BottomSheetType
+) {
+    val sheetState = rememberModalBottomSheetState(confirmValueChange = { false })
+
+    LaunchedEffect(Unit) { sheetState.expand() }
+
+    NewsyTheme {
+        BottomSheet(
+            sheetState = sheetState,
+            sheetContent = {
+                when (sheetType) {
+                    BottomSheetType.Confirm ->
+                        ConfirmBottomSheetContent(
+                            description = stringResource(R.string.confirm),
+                            onOkClick = {},
+                            onCancelClick = {}
+                        )
+
+                    BottomSheetType.Failure ->
+                        FailureBottomSheetContent(
+                            title = stringResource(R.string.failure),
+                            description = stringResource(R.string.something_went_wrong),
+                            onOkClick = {}
+                        )
+
+                    BottomSheetType.Success ->
+                        SuccessBottomSheetContent(
+                            description = stringResource(R.string.success),
+                            onOkClick = {}
+                        )
+
+                    BottomSheetType.Loading -> LoadingContent()
+                }
+            },
+            content = {}
+        )
+    }
+}
+
+private class PreviewParameterBottomSheetType : PreviewParameterProvider<BottomSheetType> {
+    override val values: Sequence<BottomSheetType>
+        get() = sequenceOf(
+            BottomSheetType.Confirm,
+            BottomSheetType.Loading,
+            BottomSheetType.Success,
+            BottomSheetType.Failure
+        )
 }

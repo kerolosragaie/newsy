@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HeadlineDao {
-
     @Query("SELECT * FROM headline_articles_table")
     fun getAllHeadlineArticles(): PagingSource<Int, HeadlineArticleEntity>
 

@@ -77,7 +77,7 @@ private fun FailureBottomSheetContentPreview() {
         FailureBottomSheetContent(
             title = stringResource(R.string.failure),
             description = stringResource(R.string.something_went_wrong),
-            onOkClick = { }
+            onOkClick = {}
         )
     }
 }

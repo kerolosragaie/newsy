@@ -18,7 +18,7 @@ import com.likander.newsy.core.theme.ITEM_SPACING
 import com.likander.newsy.core.utils.ArticleCategory
 import com.likander.newsy.features.headline.domain.model.Article
 import com.likander.newsy.features.headline.presentation.components.HeaderTitle
-import com.likander.newsy.features.headline.presentation.viewmodel.HomeUiState
+import com.likander.newsy.features.headline.presentation.model.HomeUiState
 
 fun LazyListScope.discoverItems(
     homeUiState: HomeUiState,

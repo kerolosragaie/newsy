@@ -7,7 +7,6 @@ import com.likander.newsy.features.headline.data.remote.api.HeadlineApi
 import kotlinx.coroutines.flow.Flow
 
 interface HeadlineLocalDataSource {
-
     fun getAllHeadlineArticles(
         headlineApi: HeadlineApi,
         category: String,

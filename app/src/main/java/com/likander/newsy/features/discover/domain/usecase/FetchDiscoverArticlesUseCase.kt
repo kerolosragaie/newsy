@@ -5,9 +5,7 @@ import com.likander.newsy.features.discover.domain.repo.DiscoverRepo
 import com.likander.newsy.features.headline.domain.model.Article
 import kotlinx.coroutines.flow.Flow
 
-class FetchDiscoverArticlesUseCase(
-    private val discoverRepo: DiscoverRepo
-) {
+class FetchDiscoverArticlesUseCase(private val discoverRepo: DiscoverRepo) {
     operator fun invoke(
         category: String,
         country: String,
