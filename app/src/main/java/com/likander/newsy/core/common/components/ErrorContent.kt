@@ -26,6 +26,7 @@ fun ErrorContent(
     modifier: Modifier = Modifier,
     title: String? = null,
     message: String? = null,
+    buttonName: String? = null,
     retryFunc: (() -> Unit)? = null,
 ) {
     Surface {
@@ -52,9 +53,7 @@ fun ErrorContent(
                 Button(
                     onClick = { retryFunc() }
                 ) {
-                    Text(
-                        text = stringResource(R.string.retry)
-                    )
+                    Text(buttonName ?: stringResource(R.string.retry))
                 }
             }
         }
@@ -65,8 +64,6 @@ fun ErrorContent(
 @Composable
 fun ErrorScreenPreview() {
     NewsyTheme() {
-        ErrorContent(
-            message = "Error",
-        )
+        ErrorContent(message = "Error")
     }
 }
