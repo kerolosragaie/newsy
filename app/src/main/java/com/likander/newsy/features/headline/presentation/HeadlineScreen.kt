@@ -23,7 +23,6 @@ import com.likander.newsy.features.headline.domain.model.Article
 import com.likander.newsy.features.headline.presentation.components.HeaderTitle
 import com.likander.newsy.features.headline.presentation.viewmodel.HeadlineViewModel
 
-
 @Composable
 fun HeadlineScreen(
     headlineViewModel: HeadlineViewModel = hiltViewModel(),
@@ -40,7 +39,6 @@ fun HeadlineScreen(
         )
     }
 }
-
 
 @Composable
 private fun ScreenContent(
