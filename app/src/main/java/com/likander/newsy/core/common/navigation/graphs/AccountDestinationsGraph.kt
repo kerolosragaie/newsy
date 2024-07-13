@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.likander.newsy.core.common.navigation.navigateSingleTopTo
+import com.likander.newsy.core.common.navigation.navigateTo
 
 private sealed class AccountDestinations(val route: String) {
     companion object {
@@ -38,6 +38,6 @@ private class AccountGraphActions(navController: NavController) {
     val navigateUp: () -> Unit = { navController.navigateUp() }
 
     val navigateToFavouriteScreen: () -> Unit = {
-        navController.navigateSingleTopTo(AccountDestinations.FavouriteScreen.route)
+        navController.navigateTo(AccountDestinations.FavouriteScreen.route)
     }
 }

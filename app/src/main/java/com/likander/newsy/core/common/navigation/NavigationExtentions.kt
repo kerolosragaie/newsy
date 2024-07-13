@@ -7,44 +7,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import com.likander.newsy.core.common.navigation.graphs.AppDestinations
-
-/**
- * Navigates to the given [route] and clears the back stack up to the start destination of the current graph.
- * This function ensures that the user is taken to the specified destination while resetting the navigation
- * stack to its initial state, effectively preventing the user from navigating back to previous screens
- * within the current navigation flow.
- *
- * @param errorFallbackRoute A route to navigate to if the specified route is not found.
- * @param onDestinationNotFound A lambda function to execute if the destination is not found, or null to use the default behavior.
- *
- * @throws IllegalArgumentException if the destination specified by the route cannot be found in the navigation graph.
- *
- * @param route representing the destination to navigate to.
- */
-fun NavController.navigateSingleTopTo(
-    route: String,
-    errorFallbackRoute: String = AppDestinations.ErrorScreen.route,
-    onDestinationNotFound: (() -> Unit)? = null
-) {
-    try {
-        navigate(route) {
-            popUpTo(graph.findStartDestination().id) {
-                inclusive = true
-            }
-            launchSingleTop = true
-            restoreState = true
-        }
-    } catch (_: Exception) {
-        onDestinationNotFound?.invoke() ?: run {
-            navigate(errorFallbackRoute)
-        }
-    }
-}
 
 /**
  * Safely navigates to a route in Nav-graph, handling errors with a callback or fallback screen.
