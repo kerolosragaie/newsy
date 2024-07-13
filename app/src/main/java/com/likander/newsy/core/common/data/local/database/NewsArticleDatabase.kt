@@ -2,6 +2,7 @@ package com.likander.newsy.core.common.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.likander.newsy.features.detail.data.dao.DetailDao
 import com.likander.newsy.features.discover.data.local.dao.DiscoverDao
 import com.likander.newsy.features.discover.data.local.dao.DiscoverRemoteKeyDao
 import com.likander.newsy.features.discover.data.local.model.DiscoverArticleEntity
@@ -26,4 +27,5 @@ abstract class NewsArticleDatabase : RoomDatabase() {
     abstract fun headlineRemoteKeyDao(): HeadlineRemoteKeyDao
     abstract fun discoverDao(): DiscoverDao
     abstract fun discoverRemoteKeyDao(): DiscoverRemoteKeyDao
+    abstract fun detailDao(): DetailDao
 }
