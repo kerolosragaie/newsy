@@ -1,4 +1,4 @@
-package com.likander.newsy.features.headline.presentation.viewmodel
+package com.likander.newsy.features.headline.presentation.model
 
 import com.likander.newsy.core.utils.ArticleCategory
 import com.likander.newsy.features.headline.domain.model.Article
