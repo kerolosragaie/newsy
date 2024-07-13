@@ -33,21 +33,19 @@ class HeadlineViewModel @Inject constructor(
         headlineState = headlineState.copy(
             headlineArticles = headlineUseCases
                 .fetchHeadlineArticleUseCase(
-                    headlineState.selectedHeadlineCategory.category,
-                    currentCountryCode,
-                    currentLanguageCode
+                    category = headlineState.selectedHeadlineCategory.category,
+                    country = currentCountryCode,
+                    language = currentLanguageCode
                 ).cachedIn(viewModelScope)
         )
     }
 
-    fun onFavouriteChange(article: Article) {
-        viewModelScope.launch {
-            val isFavourite = article.favourite
-            article.copy(
-                favourite = !isFavourite
-            ).also {
-                headlineUseCases.updateHeadlineFavouriteUseCase(it)
-            }
+    fun onFavouriteChange(article: Article) = viewModelScope.launch {
+        val isFavourite = article.favourite
+        article.copy(
+            favourite = !isFavourite
+        ).also {
+            headlineUseCases.updateHeadlineFavouriteUseCase(it)
         }
     }
 }
