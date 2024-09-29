@@ -11,13 +11,19 @@ import com.likander.newsy.features.headline.data.local.dao.HeadlineDao
 import com.likander.newsy.features.headline.data.local.dao.HeadlineRemoteKeyDao
 import com.likander.newsy.features.headline.data.local.models.HeadlineArticleEntity
 import com.likander.newsy.features.headline.data.local.models.HeadlineRemoteKeyEntity
+import com.likander.newsy.features.search.data.local.dao.SearchArticleDao
+import com.likander.newsy.features.search.data.local.dao.SearchRemoteKeyDao
+import com.likander.newsy.features.search.data.local.model.SearchEntity
+import com.likander.newsy.features.search.data.local.model.SearchRemoteKeyEntity
 
 @Database(
     entities = [
         HeadlineArticleEntity::class,
         HeadlineRemoteKeyEntity::class,
         DiscoverArticleEntity::class,
-        DiscoverRemoteArticleKeyEntity::class
+        DiscoverRemoteArticleKeyEntity::class,
+        SearchEntity::class,
+        SearchRemoteKeyEntity::class
     ],
     exportSchema = false,
     version = 1
@@ -28,4 +34,6 @@ abstract class NewsArticleDatabase : RoomDatabase() {
     abstract fun discoverDao(): DiscoverDao
     abstract fun discoverRemoteKeyDao(): DiscoverRemoteKeyDao
     abstract fun detailDao(): DetailDao
+    abstract fun searchArticleDao(): SearchArticleDao
+    abstract fun searchRemoteKeyDao(): SearchRemoteKeyDao
 }

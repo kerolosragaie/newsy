@@ -31,7 +31,6 @@ class HeadlineRepoImpl(
         }
     }
 
-
     override suspend fun updateFavouriteArticle(article: Article): Int =
         headlineLocalDataSource.updateFavouriteArticle(
             id = article.id,

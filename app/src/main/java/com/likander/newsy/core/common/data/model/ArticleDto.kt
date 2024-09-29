@@ -1,7 +1,6 @@
 package com.likander.newsy.core.common.data.model
 
 import com.google.gson.annotations.SerializedName
-import com.likander.newsy.features.headline.data.remote.model.SourceDto
 
 data class ArticleDto(
     @SerializedName("author")
@@ -20,4 +19,11 @@ data class ArticleDto(
     val url: String? = null,
     @SerializedName("urlToImage")
     val urlToImage: String? = null
+)
+
+data class SourceDto(
+    @SerializedName("id")
+    val id: String? = null,
+    @SerializedName("name")
+    val name: String? = null
 )
