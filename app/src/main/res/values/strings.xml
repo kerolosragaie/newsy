@@ -14,4 +14,7 @@
     <string name="discover_news">Discover News</string>
     <string name="retry">Retry</string>
     <string name="go_back">Go back</string>
+    <string name="explore">Explore</string>
+    <string name="search_articles_title">Search Articles e.g Bitcoin</string>
+    <string name="clear_all_history">clear all history</string>
 </resources>

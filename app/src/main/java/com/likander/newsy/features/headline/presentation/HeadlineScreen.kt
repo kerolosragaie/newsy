@@ -54,7 +54,10 @@ private fun ScreenContent(
             )
             Spacer(Modifier.size(ITEM_SPACING))
         }
-        items(count = articles.itemCount) { value ->
+        items(
+            count = articles.itemCount,
+            key = { index -> articles[index]?.id ?: index }
+        ) { value ->
             articles[value]?.let {
                 ArticleItem(
                     article = it,
@@ -72,10 +75,7 @@ private fun ScreenContent(
             PaginationLoadingItem(
                 pagingState = articles.loadState.mediator?.append,
                 onError = { e ->
-                    Toast.makeText(
-                        context, e.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 },
                 onLoading = {
                     CircularProgressIndicator(

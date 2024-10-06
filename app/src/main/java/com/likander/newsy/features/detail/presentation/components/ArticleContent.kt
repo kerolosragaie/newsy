@@ -1,6 +1,5 @@
 package com.likander.newsy.features.detail.presentation.components
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
@@ -28,6 +27,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.likander.newsy.R
+import com.likander.newsy.core.common.components.recomposeHighlighter
 import com.likander.newsy.core.theme.DEFAULT_PADDING
 import com.likander.newsy.core.theme.DEFAULT_SPACING
 import com.likander.newsy.core.theme.ITEM_SPACING
@@ -46,7 +47,6 @@ import com.likander.newsy.core.theme.NewsyTheme
 import com.likander.newsy.core.utils.Utils
 import com.likander.newsy.features.detail.domain.model.ArticleMetaData
 import com.likander.newsy.features.detail.domain.model.DetailArticle
-
 
 @Composable
 fun ArticleContent(
@@ -63,9 +63,9 @@ fun ArticleContent(
     }
 }
 
-fun LazyListScope.articleContentItems(article: DetailArticle) {
+private fun LazyListScope.articleContentItems(article: DetailArticle) {
     item {
-        ArticleImage(article)
+        ArticleImage(article.urlToImage.orEmpty())
         Spacer(modifier = Modifier.height(ITEM_SPACING))
         Text(text = article.title, style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(ITEM_SPACING))
@@ -80,30 +80,40 @@ fun LazyListScope.articleContentItems(article: DetailArticle) {
             modifier = Modifier.padding(bottom = 24.dp)
         )
     }
-    items(article.paragraphs) { paragraph ->
+    items(
+        items = article.paragraphs,
+        key = { index -> index }
+    ) { paragraph ->
         ParagraphContent(paragraph)
     }
     item {
-        val context = LocalContext.current
+        val navigateToUrl: () -> Unit = rememberIntentNavigate(article.urlToImage.orEmpty())
 
         TextButton(
-            onClick = { navigateToUrl(article.url, context) }
+            modifier = Modifier.recomposeHighlighter(),
+            onClick = navigateToUrl
         ) {
             Text("Click here to view full article")
         }
     }
 }
 
-private fun navigateToUrl(url: String, context: Context) {
-    val intent = Intent(Intent.ACTION_VIEW)
-    intent.data = Uri.parse(url)
-    context.startActivity(intent)
+@Composable
+private fun rememberIntentNavigate(url: String): () -> Unit {
+    val context = LocalContext.current
+    return remember(url) {
+        {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+            context.startActivity(intent)
+        }
+    }
 }
 
 @Composable
-private fun ArticleImage(article: DetailArticle) {
+private fun ArticleImage(url: String) {
     val imgRequest = ImageRequest.Builder(LocalContext.current)
-        .data(article.urlToImage)
+        .data(url)
         .crossfade(true)
         .build()
 
@@ -118,7 +128,6 @@ private fun ArticleImage(article: DetailArticle) {
         contentScale = ContentScale.Crop,
     )
 }
-
 
 @Composable
 private fun ArticleMetaDataContent(
@@ -202,4 +211,3 @@ private val fakeArticle =
             readingTime = 5
         )
     )
-
