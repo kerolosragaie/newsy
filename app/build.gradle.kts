@@ -129,7 +129,8 @@ dependencies {
     val mockitoVersion = "5.0.0"
     testImplementation("org.mockito:mockito-core:$mockitoVersion")
     testImplementation("org.mockito:mockito-inline:$mockitoVersion")
-
+    //Re-bugger
+    implementation("io.github.theapache64:rebugger:1.0.0-rc03")
 }
 // Allow references to generated code
 kapt {
