@@ -145,7 +145,7 @@ private fun HeadlineCard(
 ) {
     Card(
         modifier = modifier,
-        onClick = { onCardClick.invoke(article) },
+        onClick = { onCardClick(article) },
     ) {
         Column {
             NetworkImage(
@@ -174,7 +174,7 @@ private fun HeadlineCard(
                         style = MaterialTheme.typography.bodySmall,
                     )
                 }
-                IconButton(onClick = { onFavouriteChange.invoke(article) }) {
+                IconButton(onClick = { onFavouriteChange(article) }) {
                     AnimatedContent(targetState = article.favourite, label = "") {
                         when (it) {
                             true ->

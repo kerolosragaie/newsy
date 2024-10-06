@@ -1,4 +1,4 @@
-package com.likander.newsy.core.common.components
+package com.likander.newsy.core.utils
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable

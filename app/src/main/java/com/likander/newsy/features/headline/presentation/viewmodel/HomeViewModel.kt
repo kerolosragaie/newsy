@@ -35,7 +35,6 @@ class HomeViewModel @Inject constructor(
 
     fun onHomeUiEvents(homeUiEvents: HomeUiEvents) {
         when (homeUiEvents) {
-            is HomeUiEvents.ArticleClicked -> TODO()
             is HomeUiEvents.CategoryChange -> {
                 updateCategory(homeUiEvents)
                 updateDiscoverArticles()
@@ -44,7 +43,6 @@ class HomeViewModel @Inject constructor(
             is HomeUiEvents.OnHeadLineFavouriteChange -> onHeadLineFavouriteChange(homeUiEvents)
             is HomeUiEvents.OnDiscoverFavouriteChange -> onDiscoverFavouriteChange(homeUiEvents)
             is HomeUiEvents.PreferencePanelToggle -> TODO()
-            is HomeUiEvents.ViewMoreClicked -> TODO()
         }
     }
 
