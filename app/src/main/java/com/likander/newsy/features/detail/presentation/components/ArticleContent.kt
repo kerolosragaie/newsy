@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.likander.newsy.R
-import com.likander.newsy.core.common.components.recomposeHighlighter
 import com.likander.newsy.core.theme.DEFAULT_PADDING
 import com.likander.newsy.core.theme.DEFAULT_SPACING
 import com.likander.newsy.core.theme.ITEM_SPACING
@@ -89,10 +88,7 @@ private fun LazyListScope.articleContentItems(article: DetailArticle) {
     item {
         val navigateToUrl: () -> Unit = rememberIntentNavigate(article.urlToImage.orEmpty())
 
-        TextButton(
-            modifier = Modifier.recomposeHighlighter(),
-            onClick = navigateToUrl
-        ) {
+        TextButton(onClick = navigateToUrl) {
             Text("Click here to view full article")
         }
     }
